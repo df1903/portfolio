@@ -1,0 +1,8 @@
+---
+import PortfolioPage from '@/components/PortfolioPage.astro';
+import { loadPortfolio } from '@/data/portfolio';
+
+const portfolio = await loadPortfolio('en');
+---
+
+<PortfolioPage portfolio={portfolio} />
