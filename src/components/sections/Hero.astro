@@ -1,0 +1,183 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import type { AboutView, TechnologyView } from '@/data/portfolio';
+import type { ContactChannel } from '@/lib/contactLinks';
+
+interface Stat {
+	value: number;
+	suffix?: string;
+	label: string;
+}
+
+interface Props {
+	name: string;
+	location: string;
+	about: AboutView;
+	stats: Stat[];
+	featuredTechnologies: TechnologyView[];
+	channels: ContactChannel[];
+	cvPath?: string;
+}
+
+const { name, location, about, stats, featuredTechnologies, channels, cvPath } = Astro.props;
+const [firstName, ...restOfName] = name.split(' ');
+
+/** Perfil "como código". Se arma como HTML porque dentro de <pre> cada espacio cuenta. */
+const escapeHtml = (text: string) =>
+	text.replace(
+		/[&<>]/g,
+		(character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[character] ?? character,
+	);
+const key = (name: string) => `  <span class="text-subtle">${name}</span>: `;
+const text = (value: string) => `<span class="text-accent">'${escapeHtml(value)}'</span>`;
+const list = (values: string[]) =>
+	['[', ...values.map((value) => `    ${text(value)},`), '  ]'].join('\n');
+const profileCode = [
+	'<span class="text-accent-alt">const</span> <span class="text-fg">daniel</span> = {',
+	`${key('rol')}${text('Fullstack Developer')},`,
+	`${key('formacion')}${text('Ing. de Sistemas')},`,
+	`${key('enfoque')}${list(about.interests.slice(0, 3))},`,
+	`${key('idiomas')}${list(about.languages.map((language) => `${language.name} (${language.level})`))},`,
+	`${key('aprendeRapido')}<span class="text-accent-alt">true</span>,`,
+	'};',
+].join('\n');
+---
+
+<section id="inicio" class="relative overflow-hidden pt-32 pb-16 sm:pt-40 sm:pb-24">
+	<div class="grid-backdrop pointer-events-none absolute inset-0" aria-hidden="true"></div>
+	<div class="aurora bg-accent top-10 -left-24 size-96" aria-hidden="true"></div>
+	<div
+		class="aurora bg-accent-alt top-40 -right-24 size-[28rem] [animation-delay:-6s]"
+		aria-hidden="true"
+	>
+	</div>
+
+	<div class="container-page relative grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+		<div>
+			<p class="chip !border-accent/40 !text-fg" data-reveal>
+				<span class="relative flex size-2">
+					<span
+						class="bg-accent absolute inline-flex size-full animate-ping rounded-full opacity-70"
+					></span>
+					<span class="bg-accent relative inline-flex size-2 rounded-full"></span>
+				</span>
+				Abierto a oportunidades · {location}
+			</p>
+
+			<h1
+				class="mt-6 text-5xl font-bold sm:text-6xl lg:text-7xl"
+				data-reveal
+				style="--reveal-delay:80ms"
+			>
+				<span class="text-muted block text-xl font-medium sm:text-2xl">Hola, soy</span>
+				{firstName}
+				<span class="gradient-text">{restOfName.join(' ')}</span>
+			</h1>
+
+			<p
+				class="font-display mt-5 min-h-[2em] text-xl font-medium sm:text-2xl"
+				data-reveal
+				style="--reveal-delay:160ms"
+			>
+				<span class="text-subtle font-mono">&gt;</span>
+				<span class="caret" data-typed={JSON.stringify(about.roles)}>{about.roles[0]}</span>
+			</p>
+
+			<p class="text-muted mt-5 max-w-xl text-lg" data-reveal style="--reveal-delay:240ms">
+				{about.tagline}
+			</p>
+
+			<div class="mt-8 flex flex-wrap gap-3" data-reveal style="--reveal-delay:320ms">
+				<a href="#proyectos" class="btn btn-primary">
+					Ver proyectos
+					<Icon name="mdi:arrow-down" class="size-4" aria-hidden="true" />
+				</a>
+				<button type="button" class="btn btn-ghost" data-chat-open>
+					<Icon name="mdi:creation" class="text-accent size-4" aria-hidden="true" />
+					Pregúntale a mi IA
+				</button>
+				{
+					cvPath && (
+						<a href={cvPath} class="btn btn-ghost" download>
+							<Icon name="mdi:download" class="size-4" aria-hidden="true" />
+							Descargar CV
+						</a>
+					)
+				}
+			</div>
+
+			<ul class="mt-8 flex gap-2" data-reveal style="--reveal-delay:400ms">
+				{
+					channels.map((channel) => (
+						<li>
+							<ExternalLink href={channel.href} class="icon-button" aria-label={channel.label}>
+								<Icon name={channel.icon} class="size-5" aria-hidden="true" />
+							</ExternalLink>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<!-- Tarjeta "perfil como código": resume el perfil en el idioma de un desarrollador. -->
+		<div
+			class="card card-interactive overflow-hidden font-mono text-sm shadow-(--shadow)"
+			data-reveal
+			style="--reveal-delay:200ms"
+			aria-hidden="true"
+		>
+			<div class="border-line flex items-center gap-2 border-b px-4 py-3">
+				<span class="size-3 rounded-full bg-[#ff5f57]"></span>
+				<span class="size-3 rounded-full bg-[#febc2e]"></span>
+				<span class="size-3 rounded-full bg-[#28c840]"></span>
+				<span class="text-subtle ml-3 text-xs">daniel.ts</span>
+			</div>
+			<pre class="overflow-x-auto p-5 leading-7"><code set:html={profileCode} /></pre>
+		</div>
+	</div>
+
+	<div class="container-page relative mt-14 sm:mt-20">
+		<dl
+			class="border-line bg-surface/70 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border backdrop-blur sm:grid-cols-4"
+			data-reveal
+		>
+			{
+				stats.map((stat) => (
+					<div class="bg-surface/80 flex flex-col-reverse gap-1 px-5 py-6 text-center">
+						<dt class="text-subtle text-sm">{stat.label}</dt>
+						<dd class="font-display flex justify-center text-3xl font-bold sm:text-4xl">
+							<span data-count-to={stat.value}>{stat.value}</span>
+							{stat.suffix && <span class="text-accent">{stat.suffix}</span>}
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		<div
+			class="marquee mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]"
+			aria-label="Tecnologías principales"
+			data-reveal
+		>
+			<ul class="marquee-track flex w-max gap-3">
+				{
+					[...featuredTechnologies, ...featuredTechnologies].map((technology, index) => (
+						<li
+							class="chip !px-4 !py-2 !text-sm"
+							aria-hidden={index >= featuredTechnologies.length}
+						>
+							<Icon name={technology.icon} class="size-4" aria-hidden="true" />
+							{technology.name}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<script>
+	import '@/scripts/hero';
+</script>
