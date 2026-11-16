@@ -12,5 +12,15 @@ highlights:
   - 'Estructura de contexto por capas: estable, por feature, estado y handoffs.'
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/ai-workspace
 order: 12
+en:
+  summary: 'Reusable template for working with Claude Code and other agents.'
+  description: 'A template for starting AI-assisted projects with short context, on-demand loading and deterministic safety through hooks. It installs with a single command and offers two profiles (lite and full).'
+  context: 'Personal project · Developer tools'
+  highlights:
+    - 'One-command install per project, without cloning the repository.'
+    - 'Hook that protects secrets deterministically.'
+    - 'Ready-made skills and subagents (session close, feature specs, code review).'
+    - 'Layered context structure: stable, per feature, state and handoffs.'

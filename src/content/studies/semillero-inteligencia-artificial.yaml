@@ -10,3 +10,12 @@ focusAreas:
   - Agentes LLM
   - IA aplicada al desarrollo
 order: 2
+en:
+  title: 'Artificial Intelligence Research Group'
+  summary: 'A student research group where I go deeper into applying artificial intelligence to software development.'
+  highlights:
+    - 'Exploring LLM-based agents and AI-assisted workflows.'
+    - 'Applying what I learn to my own projects, such as the algorithm complexity analyzer built with the Claude API.'
+  focusAreas:
+    - 'LLM agents'
+    - 'AI applied to development'

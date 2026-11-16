@@ -18,3 +18,13 @@ repos:
     url: https://github.com/df1903/front-algorithm-analysis
 featured: true
 order: 1
+en:
+  summary: 'Algorithm complexity analyzer for pseudocode, powered by LLM agents.'
+  description: 'A system that automatically analyzes the computational complexity of algorithms written in pseudocode. It combines Lark parsing with Claude API agents to return Big O, Omega and Theta, behind a chat-style web interface.'
+  context: 'Algorithm Analysis and Design · Universidad de Caldas'
+  highlights:
+    - 'About 96% lower API cost thanks to a Supabase-backed cache.'
+    - 'Two-phase architecture: extraction (pseudocode to equations) and resolution.'
+    - 'Four solving techniques: Master Theorem, substitution, summations and recursion trees.'
+    - 'Natural language to pseudocode translation and Mermaid flowcharts.'
+    - 'Validated with 11 algorithms, from Factorial to Insertion Sort.'

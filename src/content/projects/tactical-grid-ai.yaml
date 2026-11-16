@@ -12,5 +12,15 @@ highlights:
   - Tipado estricto (mypy), linting (ruff) y tests automatizados.
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/tactical-grid-ai
 order: 10
+en:
+  summary: 'Turn-based tactical game used as a testbed for search algorithms.'
+  description: 'A 2D turn-based tactical game on a grid, used as an environment to compare BFS, DFS, UCS, A*, Beam Search, Minimax and alpha-beta pruning. It includes a graphical interface, a CLI with experiment sweeps and human vs AI matches.'
+  context: 'Intelligent Systems I · Universidad de Caldas'
+  highlights:
+    - 'Seven search and adversarial decision algorithms over the same domain.'
+    - 'GUI and CLI with parameter sweeps and CSV/JSON export.'
+    - 'Human vs AI and AI vs AI matches, with a dynamic rules variant.'
+    - 'Strict typing (mypy), linting (ruff) and automated tests.'

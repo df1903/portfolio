@@ -11,5 +11,14 @@ highlights:
   - Scripts SQL y JSON listos para ejecutar.
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/pet-connect
 order: 8
+en:
+  summary: 'Dual data model (SQL and NoSQL) for a pet social network.'
+  description: 'A database solution for a pet social network with a built-in marketplace. It includes the entity-relationship model, the full relational model in MySQL and its non-relational counterpart in MongoDB.'
+  context: 'Databases · Universidad de Caldas'
+  highlights:
+    - 'Entity-relationship model and complete relational model.'
+    - 'Equivalent implementation in MongoDB with sample data.'
+    - 'SQL and JSON scripts ready to run.'

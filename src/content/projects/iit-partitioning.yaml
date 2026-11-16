@@ -12,5 +12,15 @@ highlights:
   - Suite de tests que compara resultados contra PyPhi y búsqueda exhaustiva.
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/iit-partitioning
 order: 7
+en:
+  summary: 'Algorithms for minimum information partitions in Integrated Information Theory.'
+  description: 'Experimental implementations for computing minimum information partitions (MIP) within the framework of Integrated Information Theory (IIT), with two families of algorithms validated against PyPhi.'
+  context: 'Research · Algorithm analysis'
+  highlights:
+    - "QNodes: bipartition using Queyranne's algorithm with lazy-oracle evaluation."
+    - 'GeoMIP: geometric bipartition over the Hamming hypercube.'
+    - 'Extensions to k-partitions (KQNodes and KGeoMIP).'
+    - 'Test suite comparing results against PyPhi and exhaustive search.'

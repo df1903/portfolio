@@ -12,5 +12,16 @@ highlights:
   - CI con formato, lint, tests y build; despliegue automático en cada push.
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/portfolio
 order: 13
+en:
+  title: 'This portfolio'
+  summary: 'Static site with typed content and an assistant that answers questions about my profile.'
+  description: "The site you're looking at. Generated with Astro from content collections validated with Zod, with no client framework, a conversational assistant that answers from that same content, and continuous deployment on Cloudflare."
+  context: 'Personal project'
+  highlights:
+    - 'Decoupled content: adding a project or certificate means adding a file.'
+    - 'Assistant with a deterministic local engine and an optional language model at the edge.'
+    - 'Zero client frameworks; interactivity in plain TypeScript.'
+    - 'CI with formatting, linting, tests and build; automatic deployment on every push.'

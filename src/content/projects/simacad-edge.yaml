@@ -13,6 +13,17 @@ highlights:
   - Diseño referenciado a los estándares ASHRAE TC 9.9.
 repos:
   - label: Repositorio
+    labelEn: Repository
     url: https://github.com/df1903/simacad
 featured: true
 order: 4
+en:
+  summary: 'Environmental monitoring and access control for edge micro data centers.'
+  description: 'An embedded prototype for integrated security and monitoring. It combines RFID access control, carbon monoxide detection with automatic ventilation, PIR intrusion detection and a Python SCADA dashboard with persistent logging in SQLite.'
+  context: 'Academic project · Embedded systems'
+  highlights:
+    - 'RFID card access control with occupancy tracking and anti-tailgating logic.'
+    - 'CO detection that switches the fan on automatically.'
+    - 'Multi-tab SCADA interface: real-time dashboard, history, statistics and settings.'
+    - 'Simulation mode to test without physical hardware.'
+    - 'Design referenced to the ASHRAE TC 9.9 standards.'

@@ -23,6 +23,34 @@ interests:
   - Backend y arquitectura
   - Computación de alto desempeño
   - Videojuegos
+en:
+  headline: 'Systems Engineering student · Fullstack Developer'
+  roles:
+    - 'Fullstack Developer'
+    - 'Systems Engineering student'
+    - 'Applied AI enthusiast'
+    - 'Builder of complete projects'
+  tagline: 'I build software end to end, from the data model to the interface, and I leave it documented. I move between web development, artificial intelligence and high-performance computing.'
+  currently:
+    - 'Finishing my Systems Engineering degree at Universidad de Caldas.'
+    - 'Active member of an artificial intelligence research group.'
+    - 'Taking computer vision (CNNs) and intelligent systems courses.'
+    - 'Developing the game "Fragmento" in Unity 6.'
+    - 'Capstone project: Caldas Health Observatory (health data integration).'
+  interests:
+    - 'Artificial intelligence'
+    - 'Computer vision'
+    - 'Backend and architecture'
+    - 'High-performance computing'
+    - 'Game development'
+  bio:
+    - "I'm finishing my degree in Systems Engineering and I'm currently part of an artificial intelligence research group, where I explore how to apply AI to software development. I have 6 months of experience as a fullstack developer, covering the whole web development cycle, and 6 earlier months as a physics teaching assistant, which sharpened my ability to explain technical concepts clearly."
+    - 'Beyond that work experience, I have built several academic projects that, although born in the classroom, tackle problems with real-world application: from embedded monitoring systems to platforms with a microservices architecture and AI-based tools for algorithm analysis.'
+  languages:
+    - name: Spanish
+      level: Native
+    - name: English
+      level: B1
 ---
 
 Estoy finalizando mi formación como Ingeniero de Sistemas y actualmente participo en un semillero de inteligencia artificial, donde profundizo en su aplicación al desarrollo de software. Cuento con 6 meses de experiencia como desarrollador fullstack, cubriendo el ciclo completo del desarrollo web, y 6 meses previos como monitor de física, que reforzaron mi capacidad de explicar conceptos técnicos con claridad.
