@@ -42,7 +42,7 @@ export const site: SiteConfig = {
 	contact: {
 		email: 'daniel.franco.rincon@gmail.com',
 		whatsappNumber: undefined,
-		linkedinUrl: undefined,
+		linkedinUrl: 'https://www.linkedin.com/in/daniel-felipe-franco-rincon-1b3b84252/',
 		githubUser: 'df1903',
 	},
 	cvPath: undefined,
