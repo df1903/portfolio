@@ -8,7 +8,7 @@ import {
 	sanitizeMessages,
 } from '@/lib/chat/prompt';
 
-import { knowledge } from './fixtures/knowledge';
+import { englishKnowledge, knowledge } from './fixtures/knowledge';
 
 describe('buildKnowledgeContext', () => {
 	it('incluye cada bloque del perfil con nombres de tecnología resueltos', () => {
@@ -20,6 +20,7 @@ describe('buildKnowledgeContext', () => {
 		expect(context).toContain('Tecnologías: React, TypeScript');
 		expect(context).toContain('## Motor Analítico [Datos]');
 		expect(context).toContain('- Curso de Cálculo (Academia, 2026)');
+		expect(context).toContain('- Certificado nuevo\n');
 		expect(context).toContain('- Correo: mailto:ada@example.com');
 	});
 });
@@ -27,9 +28,14 @@ describe('buildKnowledgeContext', () => {
 describe('buildSystemPrompt', () => {
 	it('fija el rol y delimita el contexto', () => {
 		const prompt = buildSystemPrompt(knowledge);
-		expect(prompt).toContain('asistente del portafolio de Ada');
+		expect(prompt).toContain('asistente del portafolio de Ada Lovelace');
 		expect(prompt).toContain('nunca inventes');
+		expect(prompt).toContain('(español por defecto)');
 		expect(prompt).toMatch(/<contexto>[\s\S]+<\/contexto>/);
+	});
+
+	it('indica inglés como idioma por defecto en la versión inglesa', () => {
+		expect(buildSystemPrompt(englishKnowledge)).toContain('(inglés por defecto)');
 	});
 });
 

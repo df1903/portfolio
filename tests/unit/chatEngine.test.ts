@@ -4,7 +4,7 @@ import { answerQuestion, findTechnologies } from '@/lib/chat/engine';
 import { buildKnowledge, markdownToParagraphs } from '@/lib/chat/knowledge';
 import { containsPhrase, hasWordStartingWith, joinList, normalizeText } from '@/lib/chat/text';
 
-import { knowledge, sources } from './fixtures/knowledge';
+import { englishKnowledge, knowledge, sources } from './fixtures/knowledge';
 
 describe('normalizeText', () => {
 	it('quita tildes, mayúsculas y puntuación', () => {
@@ -33,10 +33,11 @@ describe('hasWordStartingWith', () => {
 });
 
 describe('joinList', () => {
-	it('une con comas y "y"', () => {
+	it('une con comas y la conjunción del idioma', () => {
 		expect(joinList([])).toBe('');
 		expect(joinList(['a'])).toBe('a');
 		expect(joinList(['a', 'b', 'c'])).toBe('a, b y c');
+		expect(joinList(['a', 'b'], 'and')).toBe('a and b');
 	});
 });
 
@@ -48,6 +49,7 @@ describe('markdownToParagraphs', () => {
 
 describe('buildKnowledge', () => {
 	it('resuelve periodos, enlaces y año de los certificados', () => {
+		expect(knowledge.locale).toBe('es');
 		expect(knowledge.experience[0].period).toBe('abr 2025 — sep 2025');
 		expect(knowledge.projects[0].links.map((link) => link.label)).toEqual([
 			'Demo',
@@ -58,7 +60,13 @@ describe('buildKnowledge', () => {
 		expect(knowledge.studies[0].status).toBe('en curso');
 	});
 
+	it('solo ofrece como enlace los canales que tienen enlace', () => {
+		// El fixture tiene WhatsApp por usuario (sin enlace): no debe aparecer.
+		expect(knowledge.contact.map((link) => link.label)).toEqual(['Correo', 'GitHub']);
+	});
+
 	it('propone sugerencias basadas en el contenido', () => {
+		expect(knowledge.suggestions).toContain('¿Quién es Ada?');
 		expect(knowledge.suggestions).toContain('¿Tiene experiencia con React?');
 		expect(knowledge.suggestions).toContain('Háblame de Motor Analítico');
 	});
@@ -67,6 +75,17 @@ describe('buildKnowledge', () => {
 		const empty = buildKnowledge({ ...sources, experience: [], projects: [] });
 		expect(empty.suggestions).toContain('¿Qué tecnologías maneja?');
 		expect(empty.suggestions).toContain('¿Qué proyectos ha hecho?');
+	});
+
+	it('genera la versión en inglés con fechas y textos en inglés', () => {
+		expect(englishKnowledge.locale).toBe('en');
+		expect(englishKnowledge.experience[0].period).toBe('Apr 2025 — Sep 2025');
+		expect(englishKnowledge.studies[0].status).toBe('in progress');
+		expect(englishKnowledge.contact.map((link) => link.label)).toEqual(['Email', 'GitHub']);
+		expect(englishKnowledge.suggestions).toContain('Does he have experience with React?');
+		const empty = buildKnowledge({ ...sources, locale: 'en', experience: [], projects: [] });
+		expect(empty.suggestions).toContain('Which technologies does he use?');
+		expect(empty.suggestions).toContain('What projects has he built?');
 	});
 });
 
@@ -81,7 +100,7 @@ describe('findTechnologies', () => {
 	});
 });
 
-describe('answerQuestion', () => {
+describe('answerQuestion (español)', () => {
 	it('cruza una tecnología con experiencia y proyectos (R13)', () => {
 		const answer = answerQuestion(knowledge, '¿Tiene experiencia con React?');
 		expect(answer.text).toContain('Desarrolladora en Analytical Engines');
@@ -145,7 +164,59 @@ describe('answerQuestion', () => {
 
 	it('saluda y ofrece sugerencias ante lo desconocido', () => {
 		expect(answerQuestion(knowledge, 'Hola').text).toContain('asistente de Ada');
-		expect(answerQuestion(knowledge, 'xyzzy').text).toContain('¿Quién es Daniel?');
+		expect(answerQuestion(knowledge, 'xyzzy').text).toContain('¿Quién es Ada?');
 		expect(answerQuestion(knowledge, '   ').text).toContain('Prueba con');
+	});
+});
+
+describe('answerQuestion (inglés)', () => {
+	it('responde en inglés cuando la base de conocimiento es inglesa', () => {
+		const answer = answerQuestion(englishKnowledge, 'Does he have experience with React?');
+		expect(answer.text).toContain('Yes. Ada Lovelace has used **React**');
+		expect(answer.text).toContain('Desarrolladora at Analytical Engines (Apr 2025 — Sep 2025)');
+		expect(answer.text).toContain('the project Telar');
+	});
+
+	it('usa plural y conjunción en inglés', () => {
+		const withTwo = buildKnowledge({
+			...sources,
+			locale: 'en',
+			projects: sources.projects.map((project) => ({ ...project, technologyIds: ['python'] })),
+		});
+		expect(answerQuestion(withTwo, 'python').text).toContain(
+			'the projects Motor Analítico and Telar',
+		);
+		expect(answerQuestion(englishKnowledge, 'Does he use Figma?').text).toContain(
+			"is part of Ada Lovelace's stack",
+		);
+	});
+
+	it.each([
+		['How can I contact him?', 'contacto', 'reach'],
+		['What certificates does he have?', 'certificaciones', '2 certificates, adding up to 10'],
+		['Does he speak English?', 'sobre-mi', 'Languages:'],
+		['Where did he study?', 'estudios', 'Education:'],
+		['What is he currently doing?', 'sobre-mi', 'working on right now'],
+		['Where has he worked?', 'experiencia', "Ada Lovelace's experience"],
+		['What projects has he built?', 'proyectos', '2 published projects'],
+		['Which technologies does he use?', 'tecnologias', 'has applied'],
+		['What are his skills?', 'habilidades', 'Fundamentals:'],
+		['Where is he located?', 'contacto', 'is based in'],
+		['Who is he?', 'sobre-mi', 'Ada Lovelace Byron'],
+		['Thanks!', 'contacto', "You're welcome"],
+	])('responde "%s" apuntando a la sección %s', (question, section, fragment) => {
+		const answer = answerQuestion(englishKnowledge, question);
+		expect(answer.section).toBe(section);
+		expect(answer.text).toContain(fragment);
+	});
+
+	it('saluda, describe proyectos y ofrece sugerencias en inglés', () => {
+		expect(answerQuestion(englishKnowledge, 'Hello').text).toContain(
+			"I'm Ada Lovelace's assistant",
+		);
+		expect(answerQuestion(englishKnowledge, 'Motor Analítico').text).toContain(
+			'Stack: Python and C++.',
+		);
+		expect(answerQuestion(englishKnowledge, 'xyzzy').text).toContain('Who is Ada?');
 	});
 });
