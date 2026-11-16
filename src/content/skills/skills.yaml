@@ -1,0 +1,125 @@
+# Habilidades (R3: distinto de tecnologías). `kind: soft` = blandas, `kind: fundamental` = conocimiento base.
+
+- id: problem-solving
+  name: Resolución de problemas
+  kind: soft
+  icon: mdi:puzzle-outline
+  description: Disfruto diagnosticar bugs y encontrar la solución más eficiente, no solo la que funciona.
+  order: 1
+  en:
+    name: 'Problem solving'
+    description: 'I enjoy diagnosing bugs and finding the most efficient solution, not just one that works.'
+
+- id: teamwork
+  name: Trabajo en equipo
+  kind: soft
+  icon: mdi:account-group-outline
+  description: Cómodo trabajando bajo Scrum/Kanban y coordinando cambios con Git en equipo.
+  order: 2
+  en:
+    name: 'Teamwork'
+    description: 'Comfortable working with Scrum/Kanban and coordinating changes with Git as a team.'
+
+- id: technical-communication
+  name: Comunicación técnica
+  kind: soft
+  icon: mdi:message-text-outline
+  description: Explico decisiones técnicas con claridad, tanto a otros desarrolladores como a personas sin perfil técnico.
+  order: 3
+  en:
+    name: 'Technical communication'
+    description: 'I explain technical decisions clearly, both to other developers and to non-technical people.'
+
+- id: self-learning
+  name: Aprendizaje autónomo
+  kind: soft
+  icon: mdi:rocket-launch-outline
+  description: Aprendo rápido herramientas y tecnologías nuevas por cuenta propia, sin esperar a que me las enseñen.
+  order: 4
+  en:
+    name: 'Self-directed learning'
+    description: 'I pick up new tools and technologies quickly on my own, without waiting to be taught.'
+
+- id: logical-thinking
+  name: Pensamiento lógico
+  kind: soft
+  icon: mdi:brain
+  description: Me apoyo en una base sólida de lógica y matemáticas para diseñar algoritmos y estructurar el código.
+  order: 5
+  en:
+    name: 'Logical thinking'
+    description: 'I rely on a solid foundation in logic and mathematics to design algorithms and structure code.'
+
+- id: algorithms
+  name: Lógica y pensamiento algorítmico
+  kind: fundamental
+  icon: mdi:function-variant
+  description: Análisis de complejidad, estructuras de datos y diseño de algoritmos.
+  topics: [Big O, Recursión, Búsqueda (BFS, DFS, A*), Minimax, Estructuras de datos]
+  order: 1
+  en:
+    name: 'Logic and algorithmic thinking'
+    description: 'Complexity analysis, data structures and algorithm design.'
+    topics:
+      - 'Big O'
+      - 'Recursion'
+      - 'Search (BFS, DFS, A*)'
+      - 'Minimax'
+      - 'Data structures'
+
+- id: software-architecture
+  name: Arquitectura de software
+  kind: fundamental
+  icon: mdi:sitemap-outline
+  description: Diseño de sistemas mantenibles y elección del estilo adecuado para cada problema.
+  topics:
+    [MVC, Clean Architecture, Arquitectura Hexagonal, Microservicios, Monolitos, Patrones de diseño]
+  order: 2
+  en:
+    name: 'Software architecture'
+    description: 'Designing maintainable systems and choosing the right style for each problem.'
+    topics:
+      - 'MVC'
+      - 'Clean Architecture'
+      - 'Hexagonal Architecture'
+      - 'Microservices'
+      - 'Monoliths'
+      - 'Design patterns'
+
+- id: agile
+  name: Metodologías ágiles
+  kind: fundamental
+  icon: mdi:sync
+  description: Entrega iterativa, calidad continua y colaboración.
+  topics: [Scrum, Kanban, Extreme Programming, DevOps, TDD, BDD]
+  order: 3
+  en:
+    name: 'Agile methodologies'
+    description: 'Iterative delivery, continuous quality and collaboration.'
+
+- id: networking
+  name: Redes y protocolos
+  kind: fundamental
+  icon: mdi:lan
+  description: Cómo se comunican los sistemas, de la capa de transporte a la de aplicación.
+  topics: [TCP/IP, UDP, HTTP/HTTPS, REST, DNS, SSH, FTP/SFTP]
+  order: 4
+  en:
+    name: 'Networking and protocols'
+    description: 'How systems talk to each other, from the transport layer to the application layer.'
+
+- id: math
+  name: Matemáticas para programación
+  kind: fundamental
+  icon: mdi:vector-triangle
+  description: Base matemática aplicada a algoritmos, optimización y aprendizaje automático.
+  topics: [Lógica, Notación matemática, Álgebra lineal, Probabilidad]
+  order: 5
+  en:
+    name: 'Mathematics for programming'
+    description: 'Mathematical foundations applied to algorithms, optimization and machine learning.'
+    topics:
+      - 'Logic'
+      - 'Mathematical notation'
+      - 'Linear algebra'
+      - 'Probability'

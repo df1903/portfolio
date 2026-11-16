@@ -1,0 +1,359 @@
+# Tecnologías (sección "Tecnologías" + vocabulario compartido con experiencia y proyectos, R13).
+# Agregar una: copia un bloque, usa un `id` único en kebab-case y un icono de https://icon-sets.iconify.design
+# (colecciones instaladas: `simple-icons:*` y `mdi:*`).
+
+# ── Lenguajes ─────────────────────────────────────────────
+- id: python
+  name: Python
+  icon: simple-icons:python
+  category: languages
+  featured: true
+- id: typescript
+  name: TypeScript
+  icon: simple-icons:typescript
+  category: languages
+  aliases: [ts]
+  featured: true
+- id: javascript
+  name: JavaScript
+  icon: simple-icons:javascript
+  category: languages
+  aliases: [js]
+  featured: true
+- id: java
+  name: Java
+  icon: simple-icons:openjdk
+  category: languages
+- id: c
+  name: C
+  icon: simple-icons:c
+  category: languages
+  aliases: [lenguaje c]
+- id: cpp
+  name: C++
+  icon: simple-icons:cplusplus
+  category: languages
+  aliases: [cplusplus]
+- id: csharp
+  name: 'C#'
+  icon: simple-icons:csharp
+  category: languages
+  aliases: [c sharp, csharp]
+- id: sql
+  name: SQL
+  icon: mdi:database-search-outline
+  category: languages
+- id: bash
+  name: Bash
+  icon: simple-icons:gnubash
+  category: languages
+  aliases: [shell]
+- id: html
+  name: HTML5
+  icon: simple-icons:html5
+  category: languages
+  aliases: [html]
+- id: css
+  name: CSS3
+  icon: simple-icons:css
+  category: languages
+  aliases: [css]
+
+# ── Frontend ──────────────────────────────────────────────
+- id: react
+  name: React
+  icon: simple-icons:react
+  category: frontend
+  aliases: [reactjs, react.js]
+  featured: true
+- id: angular
+  name: Angular
+  icon: simple-icons:angular
+  category: frontend
+- id: astro
+  name: Astro
+  icon: simple-icons:astro
+  category: frontend
+- id: tailwindcss
+  name: Tailwind CSS
+  icon: simple-icons:tailwindcss
+  category: frontend
+  aliases: [tailwind]
+  featured: true
+- id: bootstrap
+  name: Bootstrap
+  icon: simple-icons:bootstrap
+  category: frontend
+- id: vite
+  name: Vite
+  icon: simple-icons:vite
+  category: frontend
+
+# ── Backend ───────────────────────────────────────────────
+- id: nodejs
+  name: Node.js
+  icon: simple-icons:nodedotjs
+  category: backend
+  aliases: [node, nodejs]
+  featured: true
+- id: express
+  name: Express.js
+  icon: simple-icons:express
+  category: backend
+  aliases: [express]
+- id: nestjs
+  name: NestJS
+  icon: simple-icons:nestjs
+  category: backend
+  aliases: [nest]
+- id: fastapi
+  name: FastAPI
+  icon: simple-icons:fastapi
+  category: backend
+  featured: true
+- id: django
+  name: Django
+  icon: simple-icons:django
+  category: backend
+- id: dotnet
+  name: .NET Core
+  icon: simple-icons:dotnet
+  category: backend
+  aliases: [.net, dotnet, net core]
+- id: loopback
+  name: LoopBack 4
+  icon: simple-icons:loopback
+  category: backend
+  aliases: [loopback]
+- id: prisma
+  name: Prisma
+  icon: simple-icons:prisma
+  category: backend
+- id: jwt
+  name: JWT
+  icon: simple-icons:jsonwebtokens
+  category: backend
+  aliases: [json web token]
+- id: openapi
+  name: OpenAPI
+  icon: simple-icons:openapiinitiative
+  category: backend
+  aliases: [swagger spec]
+
+# ── Datos e IA ────────────────────────────────────────────
+- id: claude-api
+  name: Claude API
+  icon: simple-icons:anthropic
+  category: data-ai
+  aliases: [anthropic, llm, agentes]
+- id: numpy
+  name: NumPy
+  icon: simple-icons:numpy
+  category: data-ai
+- id: pandas
+  name: Pandas
+  icon: simple-icons:pandas
+  category: data-ai
+- id: matplotlib
+  name: Matplotlib
+  icon: mdi:chart-bell-curve-cumulative
+  category: data-ai
+- id: scikit-learn
+  name: Scikit-learn
+  icon: simple-icons:scikitlearn
+  category: data-ai
+  aliases: [sklearn, scikit]
+- id: opencv
+  name: OpenCV
+  icon: simple-icons:opencv
+  category: data-ai
+  aliases: [vision artificial, computer vision]
+- id: mediapipe
+  name: MediaPipe
+  icon: simple-icons:mediapipe
+  category: data-ai
+- id: keras
+  name: Keras
+  icon: simple-icons:keras
+  category: data-ai
+  aliases: [cnn, redes neuronales, deep learning]
+- id: jupyter
+  name: Jupyter Notebook
+  icon: simple-icons:jupyter
+  category: data-ai
+  aliases: [jupyter, notebooks]
+
+# ── Bases de datos ────────────────────────────────────────
+- id: postgresql
+  name: PostgreSQL
+  icon: simple-icons:postgresql
+  category: databases
+  aliases: [postgres]
+  featured: true
+- id: mysql
+  name: MySQL
+  icon: simple-icons:mysql
+  category: databases
+- id: mongodb
+  name: MongoDB
+  icon: simple-icons:mongodb
+  category: databases
+  aliases: [mongo]
+  featured: true
+- id: oracle
+  name: Oracle Database
+  icon: simple-icons:oracle
+  category: databases
+  aliases: [oracle]
+- id: firestore
+  name: Firebase Firestore
+  icon: simple-icons:firebase
+  category: databases
+  aliases: [firebase, firestore, cloud functions]
+- id: supabase
+  name: Supabase
+  icon: simple-icons:supabase
+  category: databases
+- id: sqlite
+  name: SQLite
+  icon: simple-icons:sqlite
+  category: databases
+
+# ── DevOps y control de versiones ─────────────────────────
+- id: git
+  name: Git
+  icon: simple-icons:git
+  category: devops
+  featured: true
+- id: github
+  name: GitHub
+  icon: simple-icons:github
+  category: devops
+- id: github-actions
+  name: GitHub Actions
+  icon: simple-icons:githubactions
+  category: devops
+  aliases: [ci/cd, ci cd, integracion continua]
+- id: gitlab
+  name: GitLab CI/CD
+  icon: simple-icons:gitlab
+  category: devops
+  aliases: [gitlab]
+- id: bitbucket
+  name: Bitbucket
+  icon: simple-icons:bitbucket
+  category: devops
+- id: docker
+  name: Docker
+  icon: simple-icons:docker
+  category: devops
+  aliases: [contenedores]
+  featured: true
+- id: cloudflare
+  name: Cloudflare
+  icon: simple-icons:cloudflare
+  category: devops
+- id: aws
+  name: AWS
+  icon: simple-icons:amazonwebservices
+  category: devops
+  aliases: [amazon web services]
+- id: linux
+  name: Linux
+  icon: simple-icons:linux
+  category: devops
+  aliases: [ubuntu, wsl]
+
+# ── Sistemas, HPC y hardware ──────────────────────────────
+- id: openmp
+  name: OpenMP
+  icon: mdi:memory
+  category: systems
+  aliases: [paralelismo, computacion paralela]
+- id: mpi
+  name: MPI
+  icon: mdi:lan
+  category: systems
+  aliases: [computacion distribuida]
+- id: cuda
+  name: CUDA
+  icon: simple-icons:nvidia
+  category: systems
+  aliases: [gpu, nvidia]
+- id: arduino
+  name: Arduino
+  icon: simple-icons:arduino
+  category: systems
+  aliases: [embebidos, iot]
+- id: unity
+  name: Unity
+  icon: simple-icons:unity
+  category: systems
+  aliases: [videojuegos, unity 6]
+
+# ── Herramientas ──────────────────────────────────────────
+- id: claude-code
+  name: Claude Code
+  icon: simple-icons:claude
+  category: tools
+  aliases: [claude, claude ai]
+- id: chatgpt
+  name: ChatGPT / Codex
+  icon: simple-icons:openai
+  category: tools
+  aliases: [chatgpt, codex, openai]
+- id: vscode
+  name: Visual Studio Code
+  icon: simple-icons:visualstudiocode
+  category: tools
+  aliases: [vs code, vscode]
+- id: visual-studio
+  name: Visual Studio
+  icon: simple-icons:visualstudio
+  category: tools
+- id: intellij
+  name: IntelliJ IDEA
+  icon: simple-icons:intellijidea
+  category: tools
+  aliases: [intellij]
+- id: pycharm
+  name: PyCharm
+  icon: simple-icons:pycharm
+  category: tools
+- id: figma
+  name: Figma
+  icon: simple-icons:figma
+  category: tools
+- id: postman
+  name: Postman
+  icon: simple-icons:postman
+  category: tools
+- id: insomnia
+  name: Insomnia
+  icon: simple-icons:insomnia
+  category: tools
+- id: swagger
+  name: Swagger
+  icon: simple-icons:swagger
+  category: tools
+- id: pytest
+  name: Pytest
+  icon: simple-icons:pytest
+  category: tools
+- id: markdown
+  name: Markdown
+  icon: simple-icons:markdown
+  category: tools
+- id: mermaid
+  name: Mermaid
+  icon: simple-icons:mermaid
+  category: tools
+- id: uml
+  name: UML / PlantUML
+  icon: simple-icons:uml
+  category: tools
+  aliases: [uml, plantuml]
+- id: geogebra
+  name: GeoGebra
+  icon: mdi:math-compass
+  category: tools

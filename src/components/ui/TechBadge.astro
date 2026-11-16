@@ -1,0 +1,29 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	name: string;
+	icon: string;
+	/** Solo icono (con nombre accesible y tooltip). */
+	compact?: boolean;
+}
+
+const { name, icon, compact = false } = Astro.props;
+---
+
+{
+	compact ? (
+		<span
+			class="border-line bg-surface-raised text-muted inline-grid size-8 place-items-center rounded-lg border"
+			title={name}
+		>
+			<Icon name={icon} class="size-4" aria-hidden="true" />
+			<span class="sr-only">{name}</span>
+		</span>
+	) : (
+		<span class="chip">
+			<Icon name={icon} class="size-3.5 shrink-0" aria-hidden="true" />
+			{name}
+		</span>
+	)
+}

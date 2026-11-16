@@ -2,7 +2,21 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "portfolio",
 	"compatibility_date": "2026-07-14",
+	// Worker mínimo: solo responde /api/* (asistente y calendario de GitHub). El resto son assets estáticos.
+	"main": "worker/index.ts",
 	"assets": {
 		"directory": "./dist",
+		"binding": "ASSETS",
+		"run_worker_first": ["/api/*"],
+	},
+	// Workers AI: cuota diaria gratuita. Si se agota, el chat usa su motor local.
+	"ai": {
+		"binding": "AI",
+	},
+	"vars": {
+		"CHAT_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+		// Calendario de contribuciones en /api/github. Requiere además el secreto GITHUB_TOKEN
+		// (solo lectura): `wrangler secret put GITHUB_TOKEN`. Sin él, el calendario no se muestra.
+		"GITHUB_USER": "df1903",
 	},
 }

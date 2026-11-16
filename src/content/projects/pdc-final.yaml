@@ -1,0 +1,28 @@
+title: Scoring metagenómico en HPC
+summary: Búsqueda aleatoria sobre un simplex 3D, paralelizada en CPU, clúster y GPU.
+description: Proyecto de computación de alto rendimiento que maximiza el AUC en la clasificación binaria de muestras metagenómicas. Implementa el mismo algoritmo con paralelismo progresivo (Python multicore, C + OpenMP, C + MPI y CUDA) y compara su desempeño.
+category: systems
+context: Programación Concurrente, Distribuida y Paralela · Universidad de Caldas
+image: ../../assets/projects/project-pdc-final.webp
+technologies: [python, c, openmp, mpi, cuda, jupyter, bash]
+highlights:
+  - 'Cuatro implementaciones del mismo algoritmo: secuencial/multicore, OpenMP, MPI y CUDA.'
+  - Framework de benchmarking con métricas de desempeño entre implementaciones.
+  - Protocolo de validación de consistencia (ΔAUC < 1e-4) entre versiones.
+  - Trazabilidad con logging automático de sesiones de agente IA.
+repos:
+  - label: Repositorio
+    labelEn: Repository
+    url: https://github.com/df1903/PDC_FINAL
+featured: true
+order: 3
+en:
+  title: 'Metagenomic scoring on HPC'
+  summary: 'Random search over a 3D simplex, parallelized on CPU, cluster and GPU.'
+  description: 'A high-performance computing project that maximizes AUC in the binary classification of metagenomic samples. It implements the same algorithm with progressive parallelism (multicore Python, C + OpenMP, C + MPI and CUDA) and compares their performance.'
+  context: 'Concurrent, Distributed and Parallel Programming · Universidad de Caldas'
+  highlights:
+    - 'Four implementations of the same algorithm: sequential/multicore, OpenMP, MPI and CUDA.'
+    - 'Benchmarking framework with performance metrics across implementations.'
+    - 'Consistency validation protocol (ΔAUC < 1e-4) between versions.'
+    - 'Traceability through automatic logging of AI agent sessions.'

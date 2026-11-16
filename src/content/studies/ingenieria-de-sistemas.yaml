@@ -1,0 +1,33 @@
+title: Ingeniería de Sistemas y Computación
+institution: Universidad de Caldas
+location: Manizales, Colombia
+status: in-progress
+summary: Formación profesional en ingeniería de software, algoritmia, bases de datos, redes, inteligencia artificial y computación de alto desempeño. Actualmente en la etapa final de la carrera.
+highlights:
+  - Proyecto integrador con la Dirección Territorial de Salud de Caldas (Observatorio de Salud).
+  - Monitor académico de Física durante un semestre.
+  - Proyectos de curso llevados a repositorios públicos documentados.
+focusAreas:
+  - Análisis y diseño de algoritmos
+  - Sistemas inteligentes
+  - Visión artificial
+  - Programación concurrente, distribuida y paralela
+  - Bases de datos
+  - Redes
+  - Desarrollo de videojuegos
+order: 1
+en:
+  title: 'Systems and Computer Engineering'
+  summary: 'Professional training in software engineering, algorithms, databases, networking, artificial intelligence and high-performance computing. Currently in the final stage of the degree.'
+  highlights:
+    - 'Capstone project with the Caldas Territorial Health Directorate (Health Observatory).'
+    - 'Physics teaching assistant for one semester.'
+    - 'Course projects taken to documented public repositories.'
+  focusAreas:
+    - 'Algorithm analysis and design'
+    - 'Intelligent systems'
+    - 'Computer vision'
+    - 'Concurrent, distributed and parallel programming'
+    - 'Databases'
+    - 'Networking'
+    - 'Game development'

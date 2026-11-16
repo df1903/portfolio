@@ -1,0 +1,89 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import FilterBar from '@/components/ui/FilterBar.astro';
+import Section from '@/components/ui/Section.astro';
+import type { CategoryOption, TechnologyView } from '@/data/portfolio';
+import { fill, type UiStrings } from '@/i18n/ui';
+import { usageCount } from '@/lib/techUsage';
+
+interface Props {
+	t: UiStrings;
+	technologies: TechnologyView[];
+	categories: CategoryOption[];
+}
+
+const { t, technologies, categories } = Astro.props;
+---
+
+<Section
+	id="tecnologias"
+	eyebrow={`04 · ${t.technologies.eyebrow}`}
+	title={t.technologies.title}
+	lead={t.technologies.lead}
+	tinted
+>
+	<div data-filter-group data-tech-explorer data-title-template={t.technologies.whereUsed}>
+		<FilterBar
+			label={t.technologies.filterLabel}
+			allLabel={t.common.all}
+			options={categories}
+			total={technologies.length}
+		/>
+
+		<ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6" data-reveal>
+			{
+				technologies.map((technology) => {
+					const count = usageCount(technology.usage);
+					return (
+						<li data-filter-item data-category={technology.category}>
+							<button
+								type="button"
+								class="card group hover:border-accent aria-pressed:border-accent aria-pressed:bg-surface-raised relative flex w-full flex-col items-center gap-2.5 px-3 py-5 text-center hover:-translate-y-1"
+								aria-pressed="false"
+								data-tech={technology.id}
+								data-tech-name={technology.name}
+								data-tech-projects={JSON.stringify(technology.usage.projects)}
+								data-tech-experience={JSON.stringify(technology.usage.experience)}
+							>
+								<Icon
+									name={technology.icon}
+									class="text-muted group-hover:text-accent group-aria-pressed:text-accent size-8 transition-colors"
+									aria-hidden="true"
+								/>
+								<span class="text-sm font-medium">{technology.name}</span>
+								{count > 0 && (
+									<span
+										class="bg-accent/15 text-accent absolute top-2 right-2 grid size-5 place-items-center rounded-full font-mono text-[0.65rem]"
+										title={fill(t.technologies.usedIn, { count })}
+									>
+										{count}
+									</span>
+								)}
+							</button>
+						</li>
+					);
+				})
+			}
+		</ul>
+
+		<div class="card border-accent/40 mt-6 p-6" data-tech-panel aria-live="polite" hidden>
+			<h3 class="text-lg font-semibold" data-tech-panel-title></h3>
+			<div class="mt-4 grid gap-6 sm:grid-cols-2">
+				<div data-tech-panel-group="experience">
+					<p class="eyebrow">{t.technologies.work}</p>
+					<ul class="text-muted mt-3 space-y-2 text-sm"></ul>
+				</div>
+				<div data-tech-panel-group="projects">
+					<p class="eyebrow">{t.technologies.projects}</p>
+					<ul class="text-muted mt-3 space-y-2 text-sm"></ul>
+				</div>
+			</div>
+			<p class="text-muted text-sm" data-tech-panel-empty hidden>{t.technologies.notLinked}</p>
+		</div>
+	</div>
+</Section>
+
+<script>
+	import '@/scripts/techExplorer';
+</script>

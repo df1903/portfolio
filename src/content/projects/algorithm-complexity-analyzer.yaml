@@ -1,0 +1,30 @@
+title: Algorithm Complexity Analyzer
+summary: Analizador de complejidad algorítmica para pseudocódigo con agentes LLM.
+description: Sistema que analiza automáticamente la complejidad computacional de algoritmos escritos en pseudocódigo. Combina parsing con Lark y agentes basados en Claude API para entregar Big O, Omega y Theta, con una interfaz web tipo chat.
+category: ai
+context: Análisis y Diseño de Algoritmos · Universidad de Caldas
+image: ../../assets/projects/project-algorithm-analyzer.webp
+technologies: [python, fastapi, claude-api, supabase, react, typescript, tailwindcss, vite]
+highlights:
+  - Reducción de ~96% del costo de API gracias a un sistema de caché con Supabase.
+  - 'Arquitectura de dos fases: extracción (pseudocódigo a ecuaciones) y resolución.'
+  - 'Cuatro técnicas de resolución: Teorema Maestro, sustitución, sumatorias y árboles de recursión.'
+  - Traducción de lenguaje natural a pseudocódigo y diagramas de flujo Mermaid.
+  - Validado con 11 algoritmos, de Factorial a Insertion Sort.
+repos:
+  - label: Backend
+    url: https://github.com/df1903/algorithm-analysis
+  - label: Frontend
+    url: https://github.com/df1903/front-algorithm-analysis
+featured: true
+order: 1
+en:
+  summary: 'Algorithm complexity analyzer for pseudocode, powered by LLM agents.'
+  description: 'A system that automatically analyzes the computational complexity of algorithms written in pseudocode. It combines Lark parsing with Claude API agents to return Big O, Omega and Theta, behind a chat-style web interface.'
+  context: 'Algorithm Analysis and Design · Universidad de Caldas'
+  highlights:
+    - 'About 96% lower API cost thanks to a Supabase-backed cache.'
+    - 'Two-phase architecture: extraction (pseudocode to equations) and resolution.'
+    - 'Four solving techniques: Master Theorem, substitution, summations and recursion trees.'
+    - 'Natural language to pseudocode translation and Mermaid flowcharts.'
+    - 'Validated with 11 algorithms, from Factorial to Insertion Sort.'

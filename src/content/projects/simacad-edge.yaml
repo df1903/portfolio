@@ -1,0 +1,29 @@
+title: SIMACAD-Edge
+summary: Monitoreo ambiental y control de acceso para micro data centers de borde.
+description: Prototipo embebido de seguridad y monitoreo integrado. Combina control de acceso RFID, detección de monóxido de carbono con ventilación automática, detección de intrusión PIR y un dashboard SCADA en Python con registro persistente en SQLite.
+category: systems
+context: Proyecto académico · Sistemas embebidos
+image: ../../assets/projects/project-simacad-edge.webp
+technologies: [python, cpp, arduino, sqlite, matplotlib]
+highlights:
+  - Control de acceso por tarjeta RFID con seguimiento de ocupación y lógica anti-tailgating.
+  - Detección de CO con activación automática del ventilador.
+  - 'Interfaz SCADA multi-pestaña: dashboard en tiempo real, histórico, estadísticas y configuración.'
+  - Modo simulación para probar sin hardware físico.
+  - Diseño referenciado a los estándares ASHRAE TC 9.9.
+repos:
+  - label: Repositorio
+    labelEn: Repository
+    url: https://github.com/df1903/simacad
+featured: true
+order: 4
+en:
+  summary: 'Environmental monitoring and access control for edge micro data centers.'
+  description: 'An embedded prototype for integrated security and monitoring. It combines RFID access control, carbon monoxide detection with automatic ventilation, PIR intrusion detection and a Python SCADA dashboard with persistent logging in SQLite.'
+  context: 'Academic project · Embedded systems'
+  highlights:
+    - 'RFID card access control with occupancy tracking and anti-tailgating logic.'
+    - 'CO detection that switches the fan on automatically.'
+    - 'Multi-tab SCADA interface: real-time dashboard, history, statistics and settings.'
+    - 'Simulation mode to test without physical hardware.'
+    - 'Design referenced to the ASHRAE TC 9.9 standards.'

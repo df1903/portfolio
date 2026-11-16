@@ -1,0 +1,124 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ChatWidget from '@/components/layout/ChatWidget.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Header from '@/components/layout/Header.astro';
+import AboutMe from '@/components/sections/AboutMe.astro';
+import Certifications from '@/components/sections/Certifications.astro';
+import Contact from '@/components/sections/Contact.astro';
+import Experience from '@/components/sections/Experience.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Projects from '@/components/sections/Projects.astro';
+import Skills from '@/components/sections/Skills.astro';
+import Studies from '@/components/sections/Studies.astro';
+import Technologies from '@/components/sections/Technologies.astro';
+import type { Portfolio } from '@/data/portfolio';
+import { site } from '@/data/site';
+import { UI } from '@/i18n/ui';
+import { buildGitHubProfileUrl } from '@/lib/contactLinks';
+
+/**
+ * La página completa, igual para todos los idiomas. Cada ruta (`pages/index.astro`,
+ * `pages/en/index.astro`) carga los datos en su idioma y los pasa aquí.
+ */
+interface Props {
+	portfolio: Portfolio;
+}
+
+const { portfolio } = Astro.props;
+const { locale } = portfolio;
+const t = UI[locale];
+
+const stats = [
+	{ value: portfolio.projects.length, label: t.hero.stats.projects },
+	{ value: portfolio.technologies.length, suffix: '+', label: t.hero.stats.technologies },
+	{ value: portfolio.certificates.length, label: t.hero.stats.certificates },
+	{ value: portfolio.certificateHours, suffix: 'h', label: t.hero.stats.hours },
+];
+
+const { githubUser } = site.contact;
+const repoUrl = githubUser
+	? `${buildGitHubProfileUrl(githubUser)}/portfolio`
+	: 'https://github.com';
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: site.name,
+	jobTitle: portfolio.about.headline,
+	description: portfolio.about.tagline,
+	address: { '@type': 'PostalAddress', addressLocality: t.meta.location },
+	alumniOf: portfolio.studies[0]?.institution,
+	knowsAbout: portfolio.technologies
+		.filter((technology) => technology.featured)
+		.map((technology) => technology.name),
+	sameAs: portfolio.contactChannels.flatMap((channel) =>
+		channel.href?.startsWith('https://') ? [channel.href] : [],
+	),
+	...(site.url ? { url: site.url } : {}),
+};
+---
+
+<BaseLayout
+	locale={locale}
+	title={`${site.shortName} — ${t.meta.role}`}
+	description={t.meta.description}
+	structuredData={structuredData}
+>
+	<Header
+		slot="header"
+		locale={locale}
+		t={t}
+		initials={site.initials}
+		name={site.shortName}
+		sections={site.sections}
+	/>
+
+	<Hero
+		t={t}
+		name={site.shortName}
+		about={portfolio.about}
+		stats={stats}
+		featuredTechnologies={portfolio.technologies.filter((technology) => technology.featured)}
+		channels={portfolio.contactChannels}
+		cvPath={site.cvPath}
+	/>
+	<AboutMe t={t} about={portfolio.about} />
+	<Experience t={t} experience={portfolio.experience} />
+	<Projects
+		locale={locale}
+		t={t}
+		projects={portfolio.projects}
+		categories={portfolio.projectCategories}
+		githubUser={githubUser}
+	/>
+	<Technologies
+		t={t}
+		technologies={portfolio.technologies}
+		categories={portfolio.technologyCategories}
+	/>
+	<Skills t={t} skills={portfolio.skills} />
+	<Studies t={t} studies={portfolio.studies} />
+	<Certifications
+		t={t}
+		certificates={portfolio.certificates}
+		categories={portfolio.certificateCategories}
+		totalHours={portfolio.certificateHours}
+	/>
+	<Contact t={t} channels={portfolio.contactChannels} />
+
+	<Footer
+		slot="footer"
+		t={t}
+		name={site.name}
+		channels={portfolio.contactChannels}
+		repoUrl={repoUrl}
+	/>
+	<ChatWidget
+		slot="overlays"
+		locale={locale}
+		t={t}
+		ownerName={site.shortName.split(' ')[0]}
+		suggestions={portfolio.knowledge.suggestions}
+	/>
+</BaseLayout>

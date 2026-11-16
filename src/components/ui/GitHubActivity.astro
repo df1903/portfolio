@@ -1,0 +1,112 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import { LOCALE_TAGS, type Locale } from '@/i18n/config';
+import type { UiStrings } from '@/i18n/ui';
+import { buildGitHubProfileUrl } from '@/lib/contactLinks';
+
+interface Props {
+	locale: Locale;
+	t: UiStrings;
+	user: string;
+}
+
+const LEVELS = [0, 1, 2, 3, 4];
+
+const { locale, t, user } = Astro.props;
+const strings = t.github;
+---
+
+<!--
+	Actividad en vivo. Todo el bloque nace oculto y scripts/githubActivity.ts lo muestra solo con
+	los datos que consiga: si GitHub no responde, la página queda igual que sin él.
+-->
+<div
+	class="mt-16"
+	data-github-activity
+	data-user={user}
+	data-locale={LOCALE_TAGS[locale]}
+	data-updated-label={strings.updated}
+	data-no-description={strings.noDescription}
+	hidden
+>
+	<header class="mb-6 flex flex-wrap items-end justify-between gap-4">
+		<div>
+			<h3 class="flex items-center gap-2.5 text-2xl font-bold">
+				<Icon name="simple-icons:github" class="size-6" aria-hidden="true" />
+				{strings.title}
+			</h3>
+			<p class="text-subtle mt-1 flex items-center gap-2 text-sm">
+				<span class="relative flex size-2">
+					<span
+						class="bg-accent absolute inline-flex size-full animate-ping rounded-full opacity-70"
+					></span>
+					<span class="bg-accent relative inline-flex size-2 rounded-full"></span>
+				</span>
+				{strings.lead}
+			</p>
+		</div>
+		<ExternalLink href={buildGitHubProfileUrl(user)} class="btn btn-ghost !py-2 text-sm">
+			{strings.viewProfile}
+			<Icon name="mdi:arrow-top-right" class="size-4" aria-hidden="true" />
+		</ExternalLink>
+	</header>
+
+	<div class="card mb-6 p-5 sm:p-6" data-github-calendar hidden>
+		<p class="mb-4 text-sm">
+			<strong class="font-display text-2xl font-bold" data-github-total></strong>
+			<span class="text-muted">{strings.contributions}</span>
+		</p>
+		<div class="overflow-x-auto pb-2">
+			<div
+				class="grid w-max grid-flow-col grid-rows-7 gap-1"
+				role="img"
+				aria-label={strings.calendarLabel}
+				data-github-grid
+			>
+			</div>
+		</div>
+		<p class="text-subtle mt-3 flex items-center justify-end gap-1.5 text-xs" aria-hidden="true">
+			{strings.less}
+			{LEVELS.map((level) => <span class="contribution-cell" data-level={level} />)}
+			{strings.more}
+		</p>
+	</div>
+
+	<h4 class="text-subtle mb-4 font-mono text-xs tracking-widest uppercase" data-github-repos-title>
+		{strings.recentRepos}
+	</h4>
+	<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-github-repos></ul>
+</div>
+
+<style is:global>
+	.contribution-cell {
+		width: 14px;
+		height: 14px;
+		border-radius: 3px;
+		background: var(--surface-raised);
+		outline: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+		outline-offset: -1px;
+	}
+
+	.contribution-cell[data-level='1'] {
+		background: color-mix(in srgb, var(--accent) 30%, var(--surface-raised));
+	}
+
+	.contribution-cell[data-level='2'] {
+		background: color-mix(in srgb, var(--accent) 55%, var(--surface-raised));
+	}
+
+	.contribution-cell[data-level='3'] {
+		background: color-mix(in srgb, var(--accent) 80%, var(--surface-raised));
+	}
+
+	.contribution-cell[data-level='4'] {
+		background: var(--accent);
+	}
+</style>
+
+<script>
+	import '@/scripts/githubActivity';
+</script>

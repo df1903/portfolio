@@ -1,0 +1,144 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { SectionId } from '@/data/site';
+import { LOCALES, localeRoot, type Locale } from '@/i18n/config';
+import type { UiStrings } from '@/i18n/ui';
+
+interface Props {
+	locale: Locale;
+	t: UiStrings;
+	initials: string;
+	name: string;
+	sections: readonly SectionId[];
+}
+
+const { locale, t, initials, name, sections } = Astro.props;
+// Con dos idiomas, el selector es un enlace directo al otro.
+const otherLocale = LOCALES.find((candidate) => candidate !== locale) ?? locale;
+---
+
+<header
+	class="border-line/70 bg-bg/75 fixed inset-x-0 top-0 z-40 border-b backdrop-blur-xl"
+	data-header
+>
+	<div class="container-page flex h-16 items-center justify-between gap-4">
+		<a
+			href="#inicio"
+			class="group flex items-center gap-2.5"
+			aria-label={`${name} — ${t.header.home}`}
+		>
+			<span
+				class="bg-accent text-accent-contrast font-display grid size-9 place-items-center rounded-xl text-sm font-bold transition-transform group-hover:-rotate-6"
+				>{initials}</span
+			>
+			<span
+				class="font-display hidden text-sm font-semibold whitespace-nowrap sm:block lg:hidden xl:block"
+				>{name}</span
+			>
+		</a>
+
+		<nav aria-label={t.header.sections} class="hidden lg:block">
+			<ul class="flex items-center gap-1">
+				{
+					sections.map((id) => (
+						<li>
+							<a
+								href={`#${id}`}
+								data-nav-link={id}
+								class="text-muted hover:text-fg aria-[current=true]:bg-surface-raised aria-[current=true]:text-fg rounded-lg px-2.5 py-2 text-sm whitespace-nowrap transition-colors"
+							>
+								{t.nav[id]}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				class="btn btn-ghost hidden !px-3 !py-2 text-sm whitespace-nowrap sm:inline-flex"
+				data-chat-open
+			>
+				<Icon name="mdi:creation" class="text-accent size-4" aria-hidden="true" />
+				{t.header.assistant}
+			</button>
+			<a
+				href={localeRoot(otherLocale)}
+				hreflang={otherLocale}
+				lang={otherLocale}
+				class="icon-button font-mono text-xs font-semibold uppercase"
+				aria-label={t.header.switchLanguage}
+				title={t.header.switchLanguage}
+				data-language-switch
+			>
+				{otherLocale}
+			</a>
+			<button type="button" class="icon-button" data-theme-toggle aria-label={t.header.toggleTheme}>
+				<Icon
+					name="mdi:white-balance-sunny"
+					class="size-5"
+					data-theme-icon="dark"
+					aria-hidden="true"
+				/>
+				<Icon name="mdi:weather-night" class="size-5" data-theme-icon="light" aria-hidden="true" />
+			</button>
+			<button
+				type="button"
+				class="icon-button lg:hidden"
+				data-menu-toggle
+				data-open-label={t.header.openMenu}
+				data-close-label={t.header.closeMenu}
+				aria-label={t.header.openMenu}
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+			>
+				<Icon name="mdi:menu" class="size-5" data-menu-icon="closed" aria-hidden="true" />
+				<Icon name="mdi:close" class="size-5" data-menu-icon="open" hidden aria-hidden="true" />
+			</button>
+		</div>
+	</div>
+
+	<nav
+		id="mobile-menu"
+		aria-label={t.header.sectionsMobile}
+		class="border-line bg-bg border-t lg:hidden"
+		hidden
+	>
+		<ul class="container-page grid grid-cols-2 gap-1 py-4">
+			{
+				sections.map((id) => (
+					<li>
+						<a
+							href={`#${id}`}
+							data-nav-link={id}
+							class="text-muted hover:bg-surface hover:text-fg aria-[current=true]:text-accent block rounded-lg px-3 py-2.5 text-sm"
+						>
+							{t.nav[id]}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<div
+		class="from-accent to-accent-alt absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r"
+		data-scroll-progress
+		aria-hidden="true"
+	>
+	</div>
+</header>
+
+<style>
+	:global([data-theme='light']) [data-theme-icon='dark'],
+	:global([data-theme='dark']) [data-theme-icon='light'] {
+		display: none;
+	}
+</style>
+
+<script>
+	import '@/scripts/navigation';
+</script>

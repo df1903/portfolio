@@ -1,0 +1,35 @@
+title: Akinmueble
+summary: Plataforma inmobiliaria con arquitectura de microservicios.
+description: Sitio inmobiliario construido con tres microservicios independientes (seguridad, lógica de negocio y notificaciones) y un frontend Angular. Cubre gestión de propiedades, autenticación y autorización, y envío de notificaciones.
+category: web
+context: Proyecto académico · 4 repositorios
+image: ../../assets/projects/project-akinmueble.webp
+technologies: [typescript, angular, loopback, mongodb, mysql, csharp, docker, aws, openapi]
+highlights:
+  - Tres microservicios con responsabilidades separadas y bases de datos propias (MongoDB y MySQL).
+  - Microservicio de seguridad con autenticación y autorización.
+  - Notificaciones en C# con SendGrid y AWS.
+  - APIs documentadas con OpenAPI y servicios contenedorizados con Docker.
+repos:
+  - label: Frontend
+    url: https://github.com/df1903/frontend-akinmueble
+  - label: Seguridad
+    labelEn: Security
+    url: https://github.com/df1903/ms-security-akinmueble
+  - label: Lógica de negocio
+    labelEn: Business logic
+    url: https://github.com/df1903/ms-business-logic-akinmueble
+  - label: Notificaciones
+    labelEn: Notifications
+    url: https://github.com/df1903/ms-notifications-akinmueble
+featured: true
+order: 2
+en:
+  summary: 'Real estate platform built on a microservices architecture.'
+  description: 'A real estate site built with three independent microservices (security, business logic and notifications) and an Angular frontend. It covers property management, authentication and authorization, and notification delivery.'
+  context: 'Academic project · 4 repositories'
+  highlights:
+    - 'Three microservices with separate responsibilities and their own databases (MongoDB and MySQL).'
+    - 'Security microservice handling authentication and authorization.'
+    - 'Notifications in C# with SendGrid and AWS.'
+    - 'APIs documented with OpenAPI and services containerized with Docker.'

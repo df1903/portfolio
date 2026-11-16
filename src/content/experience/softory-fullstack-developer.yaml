@@ -1,0 +1,23 @@
+company: Softory
+role: Desarrollador Fullstack
+start: 2025-04-01
+end: 2025-09-30
+location: Remoto
+summary: Desarrollo web de extremo a extremo, del frontend en React a servicios y automatizaciones en la nube.
+responsibilities:
+  - Diseñé e implementé módulos web escalables, asegurando su integración con el sistema y una experiencia de usuario consistente.
+  - Desarrollé y mantuve aplicaciones web de extremo a extremo (frontend y backend).
+  - Implementé pruebas, corrección de errores y mejoras continuas para garantizar la calidad del software.
+  - Diseñé e implementé APIs REST para la integración entre servicios y aplicaciones.
+  - Desarrollé Cloud Functions y triggers para automatizar procesos e integrar servicios mediante eventos.
+technologies: [javascript, typescript, react, express, firestore, tailwindcss, git]
+en:
+  role: 'Fullstack Developer'
+  location: 'Remote'
+  summary: 'End-to-end web development, from the React frontend to cloud services and automations.'
+  responsibilities:
+    - 'Designed and implemented scalable web modules, ensuring their integration with the system and a consistent user experience.'
+    - 'Developed and maintained end-to-end web applications (frontend and backend).'
+    - 'Wrote tests, fixed bugs and delivered continuous improvements to guarantee software quality.'
+    - 'Designed and implemented REST APIs to integrate services and applications.'
+    - 'Built Cloud Functions and triggers to automate processes and integrate services through events.'

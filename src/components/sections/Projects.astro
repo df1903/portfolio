@@ -1,0 +1,76 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import FilterBar from '@/components/ui/FilterBar.astro';
+import GitHubActivity from '@/components/ui/GitHubActivity.astro';
+import ProjectCard from '@/components/ui/ProjectCard.astro';
+import Section from '@/components/ui/Section.astro';
+import type { CategoryOption, ProjectView } from '@/data/portfolio';
+import type { Locale } from '@/i18n/config';
+import type { UiStrings } from '@/i18n/ui';
+
+interface Props {
+	locale: Locale;
+	t: UiStrings;
+	projects: ProjectView[];
+	categories: CategoryOption[];
+	/** Usuario de GitHub para el bloque de actividad en vivo; sin él no se muestra. */
+	githubUser?: string;
+}
+
+const { locale, t, projects, categories, githubUser } = Astro.props;
+---
+
+<Section
+	id="proyectos"
+	eyebrow={`03 · ${t.projects.eyebrow}`}
+	title={t.projects.title}
+	lead={t.projects.lead}
+>
+	<div data-filter-group>
+		<FilterBar
+			label={t.projects.filterLabel}
+			allLabel={t.common.all}
+			options={categories}
+			total={projects.length}
+		/>
+		<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				projects.map((project, index) => (
+					<li
+						data-filter-item
+						data-category={project.category}
+						data-reveal
+						style={`--reveal-delay:${(index % 3) * 90}ms`}
+					>
+						<ProjectCard t={t} project={project} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	{githubUser && <GitHubActivity locale={locale} t={t} user={githubUser} />}
+</Section>
+
+<dialog
+	class="modal w-[min(44rem,calc(100vw-2rem))]"
+	data-project-dialog
+	aria-labelledby="project-dialog-title"
+>
+	<div class="relative max-h-[85vh] overflow-y-auto p-6 sm:p-9">
+		<button
+			type="button"
+			class="icon-button absolute top-4 right-4"
+			data-dialog-close
+			aria-label={t.projects.closeDetail}
+		>
+			<Icon name="mdi:close" class="size-5" aria-hidden="true" />
+		</button>
+		<div class="pr-10" data-project-dialog-body></div>
+	</div>
+</dialog>
+
+<script>
+	import '@/scripts/projectDialog';
+</script>

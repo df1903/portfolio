@@ -1,0 +1,28 @@
+title: Escuelas Familiares
+summary: Plataforma que conecta familias y escuelas con un repositorio educativo.
+description: Plataforma para fortalecer la relación entre familias y escuelas. Facilita el acceso y la gestión de información educativa para docentes, practicantes y directivos, consolidando informes de práctica, materiales educativos y artículos de investigación.
+category: web
+context: Proyecto académico · Backend + frontend
+image: ../../assets/projects/project-escuelas-familiares.webp
+technologies:
+  [typescript, nodejs, nestjs, mongodb, supabase, react, tailwindcss, docker, github-actions]
+highlights:
+  - API REST con persistencia en MongoDB.
+  - Almacenamiento de archivos en Supabase y notificaciones por correo.
+  - Gestión de información para múltiples roles (docentes, practicantes, directivos).
+  - Workflows automatizados con GitHub Actions.
+repos:
+  - label: Backend
+    url: https://github.com/df1903/backend-escuelas-familiares
+  - label: Frontend
+    url: https://github.com/df1903/frontend-escuelas-familiares
+order: 6
+en:
+  summary: 'Platform connecting families and schools around an educational repository.'
+  description: 'A platform to strengthen the relationship between families and schools. It gives teachers, trainees and school leaders easy access to educational information, consolidating practice reports, teaching materials and research articles.'
+  context: 'Academic project · Backend + frontend'
+  highlights:
+    - 'REST API with MongoDB persistence.'
+    - 'File storage on Supabase and email notifications.'
+    - 'Information management for multiple roles (teachers, trainees, school leaders).'
+    - 'Automated workflows with GitHub Actions.'

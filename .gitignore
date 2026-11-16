@@ -11,3 +11,8 @@ build/
 .claude/
 .context
 CLAUDE.md
+coverage/
+test-results/
+playwright-report/
+.wrangler/
+.dev.vars

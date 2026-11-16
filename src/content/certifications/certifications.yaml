@@ -1,0 +1,159 @@
+# Certificados (R6–R8).
+#
+# CÓMO AGREGAR UNO NUEVO
+#   1. Copia la imagen (.webp, .png o .jpg) a `src/assets/certificates/`.
+#   2. (Opcional pero recomendado) agrega aquí un bloque cuyo `id` sea el nombre del archivo sin extensión.
+#   3. `git push` → se redespliega solo.
+# Si omites el paso 2 el certificado igual aparece: el título se deduce del nombre del archivo.
+#
+# Categorías: ai | web | programming | fundamentals | tools | soft-skills
+
+- id: diploma-claude-code
+  title: Curso de Claude Code
+  issuer: Platzi
+  date: 2026-07-10
+  hours: 8
+  category: ai
+- id: diploma-chatgpt-v2
+  title: Curso de ChatGPT (edición 2026)
+  issuer: Platzi
+  date: 2026-07-01
+  hours: 16
+  category: ai
+- id: diploma-claudeai
+  title: Curso de Claude AI
+  issuer: Platzi
+  date: 2026-06-28
+  hours: 16
+  category: ai
+- id: diploma-chatgpt
+  title: Curso de ChatGPT
+  issuer: Platzi
+  date: 2024-12-23
+  hours: 15
+  category: ai
+
+- id: diploma-reactjs
+  title: Curso de React.js
+  issuer: Platzi
+  date: 2025-03-30
+  hours: 19
+  category: web
+- id: diploma-fundamentos-js
+  title: Curso de Fundamentos de JavaScript
+  issuer: Platzi
+  date: 2026-01-01
+  hours: 19
+  category: web
+- id: diploma-html-css-practico
+  title: Curso Práctico de HTML y CSS
+  issuer: Platzi
+  date: 2025-12-27
+  hours: 16
+  category: web
+- id: diploma-css
+  title: Curso de Fundamentos de CSS
+  issuer: Platzi
+  date: 2025-12-19
+  hours: 18
+  category: web
+- id: diploma-html
+  title: Curso de HTML
+  issuer: Platzi
+  date: 2025-12-17
+  hours: 15
+  category: web
+- id: diploma-fundamentos-e-historia-de-la-web
+  title: 'Introducción a la Web: Historia y Funcionamiento de Internet'
+  issuer: Platzi
+  date: 2025-12-13
+  hours: 12
+  category: web
+- id: diploma-brief
+  title: 'Diseño Mobile First: Prototipos'
+  issuer: Platzi · Torresburriel Estudio
+  date: 2024-08-04
+  hours: 12
+  category: web
+
+- id: diploma-introduccion-al-desarrollo-backend
+  title: Curso de Introducción al Desarrollo Backend
+  issuer: Platzi
+  date: 2026-01-05
+  hours: 14
+  category: programming
+- id: diploma-fundamentos-python
+  title: Curso de Fundamentos de Python
+  issuer: Platzi
+  date: 2025-12-10
+  hours: 16
+  category: programming
+- id: diploma-expresiones-regulares
+  title: Curso de Expresiones Regulares
+  issuer: Platzi
+  date: 2025-02-14
+  hours: 15
+  category: programming
+- id: diploma-ingenieria
+  title: Curso de Fundamentos de Ingeniería de Software
+  issuer: Platzi
+  date: 2024-12-29
+  hours: 16
+  category: programming
+
+- id: diploma-lenguaje-notacion-matematica
+  title: Curso de Lenguaje y Notación Matemática
+  issuer: Platzi
+  date: 2026-01-09
+  hours: 12
+  category: fundamentals
+- id: diploma-fundamentos-matematicas
+  title: Curso de Fundamentos de Matemáticas
+  issuer: Platzi
+  date: 2026-01-01
+  hours: 3
+  category: fundamentals
+- id: diploma-pensamiento-logico-estructuras
+  title: 'Pensamiento Lógico: Funciones y Estructuras de Control'
+  issuer: Platzi
+  date: 2024-12-26
+  hours: 12
+  category: fundamentals
+- id: diploma-pensamiento-logico-lenguajes
+  title: 'Pensamiento Lógico: Lenguajes de Programación'
+  issuer: Platzi
+  date: 2024-12-26
+  hours: 12
+  category: fundamentals
+- id: diploma-pensamiento-logico
+  title: 'Pensamiento Lógico: Algoritmos y Diagramas de Flujo'
+  issuer: Platzi
+  date: 2024-12-25
+  hours: 12
+  category: fundamentals
+
+- id: diploma-terminal
+  title: Curso de Introducción a la Terminal y Línea de Comandos
+  issuer: Platzi
+  date: 2024-07-30
+  hours: 11
+  category: tools
+- id: diploma-configuracion-windows
+  title: Curso de Configuración de Entorno de Desarrollo en Windows
+  issuer: Platzi
+  date: 2024-07-21
+  hours: 12
+  category: tools
+
+- id: diploma-aprendizaje-en-linea
+  title: Curso para Aprender en Línea Efectivamente
+  issuer: Platzi
+  date: 2025-12-08
+  hours: 8
+  category: soft-skills
+- id: diploma-estrategias-ingles
+  title: Strategies to Learn English Online
+  issuer: Platzi
+  date: 2024-07-20
+  hours: 11
+  category: soft-skills
