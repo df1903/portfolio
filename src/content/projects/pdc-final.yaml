@@ -1,0 +1,17 @@
+title: Scoring metagenómico en HPC
+summary: Búsqueda aleatoria sobre un simplex 3D, paralelizada en CPU, clúster y GPU.
+description: Proyecto de computación de alto rendimiento que maximiza el AUC en la clasificación binaria de muestras metagenómicas. Implementa el mismo algoritmo con paralelismo progresivo (Python multicore, C + OpenMP, C + MPI y CUDA) y compara su desempeño.
+category: systems
+context: Programación Concurrente, Distribuida y Paralela · Universidad de Caldas
+image: ../../assets/projects/project-pdc-final.webp
+technologies: [python, c, openmp, mpi, cuda, jupyter, bash]
+highlights:
+  - 'Cuatro implementaciones del mismo algoritmo: secuencial/multicore, OpenMP, MPI y CUDA.'
+  - Framework de benchmarking con métricas de desempeño entre implementaciones.
+  - Protocolo de validación de consistencia (ΔAUC < 1e-4) entre versiones.
+  - Trazabilidad con logging automático de sesiones de agente IA.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/PDC_FINAL
+featured: true
+order: 3

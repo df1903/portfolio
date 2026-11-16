@@ -1,0 +1,20 @@
+title: Algorithm Complexity Analyzer
+summary: Analizador de complejidad algorítmica para pseudocódigo con agentes LLM.
+description: Sistema que analiza automáticamente la complejidad computacional de algoritmos escritos en pseudocódigo. Combina parsing con Lark y agentes basados en Claude API para entregar Big O, Omega y Theta, con una interfaz web tipo chat.
+category: ai
+context: Análisis y Diseño de Algoritmos · Universidad de Caldas
+image: ../../assets/projects/project-algorithm-analyzer.webp
+technologies: [python, fastapi, claude-api, supabase, react, typescript, tailwindcss, vite]
+highlights:
+  - Reducción de ~96% del costo de API gracias a un sistema de caché con Supabase.
+  - 'Arquitectura de dos fases: extracción (pseudocódigo a ecuaciones) y resolución.'
+  - 'Cuatro técnicas de resolución: Teorema Maestro, sustitución, sumatorias y árboles de recursión.'
+  - Traducción de lenguaje natural a pseudocódigo y diagramas de flujo Mermaid.
+  - Validado con 11 algoritmos, de Factorial a Insertion Sort.
+repos:
+  - label: Backend
+    url: https://github.com/df1903/algorithm-analysis
+  - label: Frontend
+    url: https://github.com/df1903/front-algorithm-analysis
+featured: true
+order: 1

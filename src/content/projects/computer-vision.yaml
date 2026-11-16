@@ -1,0 +1,16 @@
+title: Visión Artificial
+summary: Detección por color, análisis facial en tiempo real y CNNs con transfer learning.
+description: Trabajos del curso de Visión Artificial con Python y OpenCV, de la detección por color y los espacios de color al análisis facial con MediaPipe, filtros morfológicos y la comparación de redes convolucionales con transfer learning en Keras.
+category: ai
+context: Visión Artificial · Universidad de Caldas
+coverIcon: simple-icons:opencv
+technologies: [python, opencv, mediapipe, keras, jupyter]
+highlights:
+  - Comparación de CNNs (VGG, ResNet, MobileNet, DenseNet) con transfer learning.
+  - Análisis facial en tiempo real con MediaPipe (medidas y forma del rostro).
+  - Lector de semáforo PARE/SIGA con HSV, morfología y contornos.
+  - Comparación en vivo de espacios de color (RGB, HSV, LAB, LUV, YCrCb, XYZ).
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/computer_vision
+order: 11

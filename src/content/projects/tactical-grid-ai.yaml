@@ -1,0 +1,16 @@
+title: Tactical Grid AI
+summary: Juego táctico por turnos como banco de pruebas de algoritmos de búsqueda.
+description: Juego táctico 2D por turnos sobre una cuadrícula, usado como entorno para comparar BFS, DFS, UCS, A*, Beam Search, Minimax y poda alfa-beta. Incluye interfaz gráfica, CLI con barridos de experimentos y partidas persona vs IA.
+category: ai
+context: Sistemas Inteligentes I · Universidad de Caldas
+coverIcon: mdi:chess-knight
+technologies: [python, pytest]
+highlights:
+  - Siete algoritmos de búsqueda y decisión adversarial sobre el mismo dominio.
+  - GUI y CLI con barridos de parámetros y exportación a CSV/JSON.
+  - Partidas persona vs IA e IA vs IA, con variante dinámica de reglas.
+  - Tipado estricto (mypy), linting (ruff) y tests automatizados.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/tactical-grid-ai
+order: 10

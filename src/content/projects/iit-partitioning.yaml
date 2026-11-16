@@ -1,0 +1,16 @@
+title: IIT Partitioning
+summary: Algoritmos para particiones mínimas de información en Teoría de Información Integrada.
+description: Implementaciones experimentales para calcular particiones mínimas de información (MIP) dentro del marco de la Teoría de Información Integrada (IIT), con dos familias de algoritmos y validación contra PyPhi.
+category: data
+context: Investigación · Análisis de algoritmos
+image: ../../assets/projects/project-iit-partitioning.webp
+technologies: [python, numpy, pandas]
+highlights:
+  - 'QNodes: bipartición con el algoritmo de Queyranne y evaluación lazy-oracle.'
+  - 'GeoMIP: bipartición geométrica sobre el hipercubo de Hamming.'
+  - Extensiones a k-particiones (KQNodes y KGeoMIP).
+  - Suite de tests que compara resultados contra PyPhi y búsqueda exhaustiva.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/iit-partitioning
+order: 7

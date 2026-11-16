@@ -1,0 +1,16 @@
+title: Este portafolio
+summary: Sitio estático con contenido tipado y un asistente que responde sobre mi perfil.
+description: El sitio que estás viendo. Generado con Astro a partir de colecciones de contenido validadas con Zod, sin frameworks de cliente, con un asistente conversacional que responde a partir del mismo contenido y despliegue continuo en Cloudflare.
+category: web
+context: Proyecto personal
+coverIcon: simple-icons:astro
+technologies: [astro, typescript, tailwindcss, cloudflare, github-actions]
+highlights:
+  - 'Contenido desacoplado: agregar un proyecto o certificado es agregar un archivo.'
+  - Asistente con motor local determinista y modelo de lenguaje opcional en el edge.
+  - Cero frameworks de cliente; interactividad con TypeScript puro.
+  - CI con formato, lint, tests y build; despliegue automático en cada push.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/portfolio
+order: 13

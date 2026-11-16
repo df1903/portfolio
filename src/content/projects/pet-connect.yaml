@@ -1,0 +1,15 @@
+title: Pet Connect
+summary: Modelo de datos dual (SQL y NoSQL) para una red social de mascotas.
+description: Solución de base de datos para una red social de mascotas con marketplace integrado. Incluye el modelo entidad-relación, el modelo relacional completo en MySQL y su contraparte no relacional en MongoDB.
+category: data
+context: Bases de Datos · Universidad de Caldas
+image: ../../assets/projects/project-pet-connect.webp
+technologies: [sql, mysql, mongodb]
+highlights:
+  - Modelo entidad-relación y modelo relacional completo.
+  - Implementación equivalente en MongoDB con datos de ejemplo.
+  - Scripts SQL y JSON listos para ejecutar.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/pet-connect
+order: 8

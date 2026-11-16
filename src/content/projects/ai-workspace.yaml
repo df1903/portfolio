@@ -1,0 +1,16 @@
+title: AI Workspace
+summary: Plantilla reutilizable para trabajar con Claude Code y otros agentes.
+description: Plantilla para arrancar proyectos asistidos por IA con contexto corto, carga bajo demanda y seguridad determinista mediante hooks. Se instala con un solo comando y ofrece dos perfiles (lite y full).
+category: tools
+context: Proyecto personal · Herramientas de desarrollo
+coverIcon: simple-icons:claude
+technologies: [bash, claude-code, markdown]
+highlights:
+  - Instalación en un comando por proyecto, sin clonar el repositorio.
+  - Hook que protege secretos de forma determinista.
+  - Skills y subagentes listos (cierre de sesión, spec de features, code review).
+  - 'Estructura de contexto por capas: estable, por feature, estado y handoffs.'
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/ai-workspace
+order: 12

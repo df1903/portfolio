@@ -1,0 +1,16 @@
+title: Medical Center
+summary: Microservicio de lógica de negocio para un centro médico.
+description: Backend para la gestión de un centro médico (citas, historias clínicas, horarios y reportes en PDF). Construido con Express, TypeScript, Prisma y PostgreSQL.
+category: web
+context: Proyecto académico · Backend
+image: ../../assets/projects/project-medical-center.webp
+technologies: [typescript, nodejs, express, prisma, postgresql]
+highlights:
+  - Gestión de citas, historias clínicas y horarios.
+  - Generación de reportes y documentos PDF (PDFKit + Puppeteer).
+  - Notificaciones por correo y tareas programadas (Nodemailer, node-cron).
+  - Autenticación con contraseñas cifradas (bcrypt) y subida de archivos.
+repos:
+  - label: Repositorio
+    url: https://github.com/df1903/medical-center
+order: 5
