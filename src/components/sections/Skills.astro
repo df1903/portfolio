@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Section from '@/components/ui/Section.astro';
+import type { SkillView } from '@/data/portfolio';
+
+interface Props {
+	skills: SkillView[];
+}
+
+const { skills } = Astro.props;
+const softSkills = skills.filter((skill) => skill.kind === 'soft');
+const fundamentals = skills.filter((skill) => skill.kind === 'fundamental');
+---
+
+<Section
+	id="habilidades"
+	eyebrow="05 · Habilidades"
+	title="Cómo trabajo y qué domino"
+	lead="Más allá de las herramientas: la forma de pensar y colaborar que llevo a cada proyecto."
+>
+	<h3 class="text-subtle mb-5 font-mono text-xs tracking-widest uppercase" data-reveal>
+		Habilidades blandas
+	</h3>
+	<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		{
+			softSkills.map((skill, index) => (
+				<li
+					class="card card-interactive p-6"
+					data-reveal
+					style={`--reveal-delay:${(index % 3) * 80}ms`}
+				>
+					<span class="bg-accent/12 text-accent grid size-11 place-items-center rounded-xl">
+						<Icon name={skill.icon} class="size-6" aria-hidden="true" />
+					</span>
+					<h4 class="font-display mt-4 text-lg font-semibold">{skill.name}</h4>
+					<p class="text-muted mt-2 text-sm">{skill.description}</p>
+				</li>
+			))
+		}
+	</ul>
+
+	<h3 class="text-subtle mt-14 mb-5 font-mono text-xs tracking-widest uppercase" data-reveal>
+		Fundamentos
+	</h3>
+	<ul class="grid gap-4 lg:grid-cols-2">
+		{
+			fundamentals.map((skill, index) => (
+				<li class="card flex gap-4 p-6" data-reveal style={`--reveal-delay:${(index % 2) * 80}ms`}>
+					<span class="bg-accent-alt/15 text-accent-alt grid size-11 shrink-0 place-items-center rounded-xl">
+						<Icon name={skill.icon} class="size-6" aria-hidden="true" />
+					</span>
+					<div>
+						<h4 class="font-display text-lg font-semibold">{skill.name}</h4>
+						<p class="text-muted mt-1 text-sm">{skill.description}</p>
+						{skill.topics.length > 0 && (
+							<ul class="mt-3 flex flex-wrap gap-1.5">
+								{skill.topics.map((topic) => (
+									<li class="chip !text-xs">{topic}</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</li>
+			))
+		}
+	</ul>
+</Section>

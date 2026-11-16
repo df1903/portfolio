@@ -1,0 +1,60 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Section from '@/components/ui/Section.astro';
+import type { AboutView } from '@/data/portfolio';
+
+interface Props {
+	about: AboutView;
+}
+
+const { about } = Astro.props;
+---
+
+<Section id="sobre-mi" eyebrow="01 · Sobre mí" title="Quién soy" lead={about.headline}>
+	<div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+		<div class="text-muted space-y-5 text-lg" data-reveal>
+			{about.bio.map((paragraph) => <p>{paragraph}</p>)}
+
+			<div class="flex flex-wrap gap-2 pt-2">
+				{about.interests.map((interest) => <span class="chip">{interest}</span>)}
+			</div>
+		</div>
+
+		<div class="space-y-5">
+			<article class="card p-6" data-reveal style="--reveal-delay:100ms">
+				<h3 class="flex items-center gap-2 text-base font-semibold">
+					<Icon name="mdi:rocket-launch-outline" class="text-accent size-5" aria-hidden="true" />
+					En qué estoy ahora
+				</h3>
+				<ul class="text-muted mt-4 space-y-3 text-sm">
+					{
+						about.currently.map((item) => (
+							<li class="flex gap-3">
+								<span class="bg-accent mt-2 size-1.5 shrink-0 rounded-full" aria-hidden="true" />
+								{item}
+							</li>
+						))
+					}
+				</ul>
+			</article>
+
+			<article class="card p-6" data-reveal style="--reveal-delay:180ms">
+				<h3 class="flex items-center gap-2 text-base font-semibold">
+					<Icon name="mdi:translate" class="text-accent size-5" aria-hidden="true" />
+					Idiomas
+				</h3>
+				<dl class="mt-4 space-y-2 text-sm">
+					{
+						about.languages.map((language) => (
+							<div class="flex items-center justify-between">
+								<dt class="text-muted">{language.name}</dt>
+								<dd class="chip">{language.level}</dd>
+							</div>
+						))
+					}
+				</dl>
+			</article>
+		</div>
+	</div>
+</Section>

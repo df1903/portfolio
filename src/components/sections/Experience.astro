@@ -1,0 +1,77 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Section from '@/components/ui/Section.astro';
+import TechBadge from '@/components/ui/TechBadge.astro';
+import type { ExperienceView } from '@/data/portfolio';
+
+interface Props {
+	experience: ExperienceView[];
+}
+
+const { experience } = Astro.props;
+---
+
+<Section
+	id="experiencia"
+	eyebrow="02 · Experiencia"
+	title="Trayectoria profesional"
+	lead="Dónde he trabajado, qué hice y con qué tecnologías."
+	tinted
+>
+	<ol class="border-line relative space-y-8 border-l pl-6 sm:pl-10">
+		{
+			experience.map((job, index) => (
+				<li class="relative" data-reveal style={`--reveal-delay:${index * 100}ms`}>
+					<span
+						class="border-accent bg-bg absolute top-7 -left-[1.95rem] size-3.5 rounded-full border-2 sm:-left-[2.95rem]"
+						aria-hidden="true"
+					/>
+					<article class="card card-interactive p-6 sm:p-8">
+						<header class="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
+							<div>
+								<h3 class="text-xl font-semibold">{job.role}</h3>
+								<p class="text-accent mt-1 font-medium">{job.company}</p>
+							</div>
+							<div class="text-subtle space-y-1 text-sm sm:text-right">
+								<p class="flex items-center gap-1.5 sm:justify-end">
+									<Icon name="mdi:calendar-blank-outline" class="size-4" aria-hidden="true" />
+									<time datetime={job.start.toISOString().slice(0, 7)}>{job.period}</time>
+								</p>
+								<p class="flex items-center gap-1.5 sm:justify-end">
+									<Icon name="mdi:map-marker-outline" class="size-4" aria-hidden="true" />
+									{job.location}
+								</p>
+							</div>
+						</header>
+
+						<p class="text-muted mt-4">{job.summary}</p>
+
+						<ul class="text-muted mt-4 space-y-2.5 text-sm">
+							{job.responsibilities.map((item) => (
+								<li class="flex gap-3">
+									<Icon
+										name="mdi:check-circle-outline"
+										class="text-accent mt-0.5 size-4 shrink-0"
+										aria-hidden="true"
+									/>
+									{item}
+								</li>
+							))}
+						</ul>
+
+						{job.technologies.length > 0 && (
+							<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías usadas">
+								{job.technologies.map((technology) => (
+									<li>
+										<TechBadge name={technology.name} icon={technology.icon} />
+									</li>
+								))}
+							</ul>
+						)}
+					</article>
+				</li>
+			))
+		}
+	</ol>
+</Section>
