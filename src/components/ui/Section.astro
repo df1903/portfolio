@@ -1,0 +1,28 @@
+---
+interface Props {
+	id: string;
+	eyebrow: string;
+	title: string;
+	lead?: string;
+	/** Fondo alterno para dar ritmo entre secciones. */
+	tinted?: boolean;
+}
+
+const { id, eyebrow, title, lead, tinted = false } = Astro.props;
+---
+
+<section
+	id={id}
+	aria-labelledby={`${id}-title`}
+	data-section
+	class:list={['py-20 sm:py-28', tinted && 'border-line bg-bg-soft border-y']}
+>
+	<div class="container-page">
+		<header class="mb-10 max-w-2xl sm:mb-14" data-reveal>
+			<p class="eyebrow"><span class="bg-accent h-px w-6" aria-hidden="true"></span>{eyebrow}</p>
+			<h2 id={`${id}-title`} class="mt-3 text-3xl font-bold sm:text-4xl">{title}</h2>
+			{lead && <p class="text-muted mt-4 text-lg">{lead}</p>}
+		</header>
+		<slot />
+	</div>
+</section>

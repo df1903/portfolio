@@ -1,0 +1,35 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	name: string;
+	icon: string;
+	/** Solo icono (con nombre accesible y tooltip). */
+	compact?: boolean;
+	/**
+	 * Incrusta el SVG completo en vez de referenciar el sprite. Obligatorio dentro de `<template>`:
+	 * un símbolo definido en contenido inerte no se puede reutilizar desde el resto de la página.
+	 */
+	inline?: boolean;
+}
+
+const { name, icon, compact = false, inline = false } = Astro.props;
+const iconMode = { 'is:inline': inline };
+---
+
+{
+	compact ? (
+		<span
+			class="border-line bg-surface-raised text-muted inline-grid size-8 place-items-center rounded-lg border"
+			title={name}
+		>
+			<Icon name={icon} class="size-4" aria-hidden="true" {...iconMode} />
+			<span class="sr-only">{name}</span>
+		</span>
+	) : (
+		<span class="chip">
+			<Icon name={icon} class="size-3.5 shrink-0" aria-hidden="true" {...iconMode} />
+			{name}
+		</span>
+	)
+}

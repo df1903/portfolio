@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/** Enlace a un recurso externo: siempre en pestaña nueva y sin filtrar `opener`/`referrer`. */
+type Props = HTMLAttributes<'a'> & { href: string };
+
+const { href, ...attributes } = Astro.props;
+const isWebLink = /^https?:/.test(href);
+---
+
+<a
+	href={href}
+	target={isWebLink ? '_blank' : undefined}
+	rel={isWebLink ? 'noopener noreferrer' : undefined}
+	{...attributes}><slot /></a
+>

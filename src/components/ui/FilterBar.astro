@@ -1,0 +1,30 @@
+---
+import type { CategoryOption } from '@/data/portfolio';
+
+interface Props {
+	/** Nombre accesible del grupo de filtros. */
+	label: string;
+	options: CategoryOption[];
+	total: number;
+}
+
+const { label, options, total } = Astro.props;
+---
+
+<div
+	class="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:flex-wrap sm:px-0"
+	role="group"
+	aria-label={label}
+	data-reveal
+>
+	<button type="button" class="filter-pill" data-filter="all" aria-pressed="true">
+		Todos <span class="count">{total}</span>
+	</button>
+	{
+		options.map((option) => (
+			<button type="button" class="filter-pill" data-filter={option.id} aria-pressed="false">
+				{option.label} <span class="count">{option.count}</span>
+			</button>
+		))
+	}
+</div>
