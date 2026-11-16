@@ -3,6 +3,7 @@ dist/
 node_modules/
 pnpm-lock.yaml
 .context/
-content-source/
 CLAUDE.md
 README.md
+coverage/
+.wrangler/
