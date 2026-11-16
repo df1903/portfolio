@@ -5,7 +5,10 @@ import { z } from 'astro/zod';
 /**
  * Esquemas de contenido. Cada sección del portafolio es una colección independiente (R5):
  * agregar contenido = agregar una entrada, sin tocar componentes.
- * Guía de edición: ver README.md → "Cómo agregar contenido".
+ *
+ * Idiomas: el contenido base es español. Cada entrada admite un bloque opcional `en` con los
+ * mismos campos de texto; lo que no se traduzca se muestra en español (ver `src/lib/localize.ts`).
+ * Guía de edición: README.md → "Cómo agregar contenido".
  */
 
 export const TECHNOLOGY_CATEGORIES = [
@@ -30,15 +33,25 @@ export const CERTIFICATE_CATEGORIES = [
 	'soft-skills',
 ] as const;
 
+/** Bloque `en`: los mismos campos de texto, todos opcionales. */
+const translation = <Shape extends z.ZodRawShape>(shape: Shape) =>
+	z.object(shape).partial().optional();
+
+const aboutText = {
+	headline: z.string(),
+	roles: z.array(z.string()).min(1),
+	tagline: z.string(),
+	currently: z.array(z.string()),
+	languages: z.array(z.object({ name: z.string(), level: z.string() })),
+	interests: z.array(z.string()),
+};
+
 const about = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/about' }),
 	schema: z.object({
-		headline: z.string(),
-		roles: z.array(z.string()).min(1),
-		tagline: z.string(),
-		currently: z.array(z.string()).default([]),
-		languages: z.array(z.object({ name: z.string(), level: z.string() })).default([]),
-		interests: z.array(z.string()).default([]),
+		...aboutText,
+		// El cuerpo Markdown es la biografía en español; en inglés va aquí, un párrafo por elemento.
+		en: translation({ ...aboutText, bio: z.array(z.string()) }),
 	}),
 });
 
@@ -55,68 +68,90 @@ const technologies = defineCollection({
 	}),
 });
 
+const skillText = {
+	name: z.string(),
+	description: z.string(),
+	topics: z.array(z.string()).default([]),
+};
+
 const skills = defineCollection({
 	loader: file('./src/content/skills/skills.yaml'),
 	schema: z.object({
-		name: z.string(),
+		...skillText,
 		kind: z.enum(['soft', 'fundamental']),
 		icon: z.string(),
-		description: z.string(),
-		topics: z.array(z.string()).default([]),
 		order: z.number().default(0),
+		en: translation(skillText),
 	}),
 });
+
+const studyText = {
+	title: z.string(),
+	location: z.string().optional(),
+	summary: z.string(),
+	highlights: z.array(z.string()).default([]),
+	focusAreas: z.array(z.string()).default([]),
+};
 
 const studies = defineCollection({
 	loader: glob({ pattern: '*.yaml', base: './src/content/studies' }),
 	schema: z.object({
-		title: z.string(),
+		...studyText,
 		institution: z.string(),
-		location: z.string().optional(),
 		status: z.enum(['in-progress', 'completed']),
 		start: z.coerce.date().optional(),
 		end: z.coerce.date().optional(),
-		summary: z.string(),
-		highlights: z.array(z.string()).default([]),
-		focusAreas: z.array(z.string()).default([]),
 		order: z.number().default(0),
+		en: translation(studyText),
 	}),
 });
+
+const experienceText = {
+	role: z.string(),
+	location: z.string(),
+	summary: z.string(),
+	responsibilities: z.array(z.string()).min(1),
+};
 
 const experience = defineCollection({
 	loader: glob({ pattern: '*.yaml', base: './src/content/experience' }),
 	schema: z.object({
+		...experienceText,
 		company: z.string(),
-		role: z.string(),
 		start: z.coerce.date(),
 		/** Omitir `end` significa "actualidad". */
 		end: z.coerce.date().optional(),
-		location: z.string(),
-		summary: z.string(),
-		responsibilities: z.array(z.string()).min(1),
 		/** R13: mismo vocabulario que la colección `technologies` (se valida en build). */
 		technologies: z.array(reference('technologies')).default([]),
+		en: translation(experienceText),
 	}),
 });
+
+const projectText = {
+	title: z.string(),
+	summary: z.string(),
+	description: z.string(),
+	context: z.string().optional(),
+	highlights: z.array(z.string()).default([]),
+};
 
 const projects = defineCollection({
 	loader: glob({ pattern: '*.yaml', base: './src/content/projects' }),
 	schema: ({ image }) =>
 		z.object({
-			title: z.string(),
-			summary: z.string(),
-			description: z.string(),
+			...projectText,
 			category: z.enum(PROJECT_CATEGORIES),
-			context: z.string().optional(),
 			/** Sin imagen se genera una portada con el icono `coverIcon`. */
 			image: image().optional(),
 			coverIcon: z.string().default('mdi:code-braces'),
 			technologies: z.array(reference('technologies')).min(1),
-			highlights: z.array(z.string()).default([]),
-			repos: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
+			repos: z
+				.array(z.object({ label: z.string(), labelEn: z.string().optional(), url: z.url() }))
+				.default([]),
 			demo: z.url().optional(),
 			featured: z.boolean().default(false),
 			order: z.number().default(100),
+			en: translation(projectText),
 		}),
 });
 
