@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	ownerName: string;
+	suggestions: string[];
+}
+
+const { ownerName, suggestions } = Astro.props;
+---
+
+<button
+	type="button"
+	class="bg-accent text-accent-contrast fixed right-5 bottom-5 z-40 grid size-14 [animation:pulse-ring_2.4s_ease-out_infinite] place-items-center rounded-2xl shadow-(--shadow) transition-transform hover:-translate-y-1 hover:scale-105"
+	data-chat-open
+	data-chat-launcher
+	aria-label={`Abrir el asistente de ${ownerName}`}
+>
+	<Icon name="mdi:chat-processing-outline" class="size-7" aria-hidden="true" />
+</button>
+
+<section
+	class="border-line-strong bg-surface fixed inset-x-3 bottom-3 z-50 flex max-h-[min(40rem,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-2xl border shadow-(--shadow) sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[25rem]"
+	data-chat-panel
+	data-owner={ownerName}
+	aria-label={`Asistente de ${ownerName}`}
+	hidden
+>
+	<header class="border-line bg-surface-raised flex items-center gap-3 border-b px-4 py-3">
+		<span class="bg-accent text-accent-contrast grid size-9 place-items-center rounded-xl">
+			<Icon name="mdi:creation" class="size-5" aria-hidden="true" />
+		</span>
+		<div class="min-w-0 flex-1">
+			<h2 class="font-display text-sm leading-tight font-semibold">Asistente de {ownerName}</h2>
+			<p class="text-subtle truncate text-xs" data-chat-status>
+				Responde sobre su perfil profesional
+			</p>
+		</div>
+		<button type="button" class="icon-button !size-9" data-chat-close aria-label="Cerrar asistente">
+			<Icon name="mdi:close" class="size-5" aria-hidden="true" />
+		</button>
+	</header>
+
+	<div
+		class="flex-1 space-y-3 overflow-y-auto p-4 text-sm"
+		data-chat-messages
+		role="log"
+		aria-live="polite"
+	>
+	</div>
+
+	<ul
+		class="flex gap-2 overflow-x-auto px-4 pb-3"
+		data-chat-suggestions
+		aria-label="Preguntas sugeridas"
+	>
+		{
+			suggestions.map((suggestion) => (
+				<li>
+					<button type="button" class="filter-pill !py-1.5 !text-xs" data-chat-suggestion>
+						{suggestion}
+					</button>
+				</li>
+			))
+		}
+	</ul>
+
+	<form class="border-line flex items-center gap-2 border-t p-3" data-chat-form>
+		<label class="sr-only" for="chat-input">Tu pregunta</label>
+		<input
+			id="chat-input"
+			type="text"
+			name="question"
+			class="border-line bg-bg placeholder:text-subtle focus:border-accent min-w-0 flex-1 rounded-xl border px-3.5 py-2.5 text-sm outline-none"
+			placeholder="Pregunta por experiencia, proyectos…"
+			maxlength="500"
+			autocomplete="off"
+			required
+		/>
+		<button type="submit" class="btn btn-primary !px-3 !py-2.5" aria-label="Enviar pregunta">
+			<Icon name="mdi:send" class="size-4" aria-hidden="true" />
+		</button>
+	</form>
+</section>
+
+<script>
+	import '@/scripts/chat';
+</script>
