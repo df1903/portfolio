@@ -1,0 +1,43 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import type { ContactChannel } from '@/lib/contactLinks';
+
+interface Props {
+	name: string;
+	channels: ContactChannel[];
+	repoUrl: string;
+}
+
+const { name, channels, repoUrl } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line border-t py-10">
+	<div
+		class="container-page text-subtle flex flex-col items-center justify-between gap-5 text-sm sm:flex-row"
+	>
+		<p>© {year} {name}. Hecho con Astro, TypeScript y Tailwind CSS.</p>
+		<ul class="flex items-center gap-2">
+			{
+				channels.map((channel) => (
+					<li>
+						<ExternalLink href={channel.href} class="icon-button" aria-label={channel.label}>
+							<Icon name={channel.icon} class="size-4" aria-hidden="true" />
+						</ExternalLink>
+					</li>
+				))
+			}
+			<li>
+				<ExternalLink
+					href={repoUrl}
+					class="hover:text-accent ml-2 inline-flex items-center gap-1.5 transition-colors"
+				>
+					<Icon name="mdi:code-braces" class="size-4" aria-hidden="true" />
+					Código fuente
+				</ExternalLink>
+			</li>
+		</ul>
+	</div>
+</footer>

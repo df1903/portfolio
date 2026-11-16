@@ -1,22 +1,80 @@
 ---
-import '../styles/global.css';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
+import '@/styles/global.css';
+
+import { site } from '@/data/site';
 
 interface Props {
 	title: string;
+	description?: string;
+	/** Datos estructurados schema.org (JSON-LD). */
+	structuredData?: Record<string, unknown>;
 }
 
-const { title } = Astro.props;
+const { title, description = site.description, structuredData } = Astro.props;
+const canonical = site.url ? new URL(Astro.url.pathname, site.url).toString() : undefined;
+const ogImage = site.url ? new URL('/og-image.png', site.url).toString() : undefined;
 ---
 
-<html lang="es">
+<!doctype html>
+<html lang="es" data-theme="dark">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="author" content={site.name} />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#070a11" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		{canonical && <link rel="canonical" href={canonical} />}
+
+		<meta property="og:type" content="profile" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:locale" content="es_CO" />
+		{canonical && <meta property="og:url" content={canonical} />}
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+		{
+			structuredData && (
+				<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+			)
+		}
+
+		<!-- Antes del primer pintado: aplica el tema guardado (sin parpadeo) y marca que hay JS. -->
+		<script is:inline>
+			(() => {
+				const root = document.documentElement;
+				root.classList.add('js');
+				try {
+					const stored = localStorage.getItem('theme');
+					const preferred = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+					root.dataset.theme = stored === 'light' || stored === 'dark' ? stored : preferred;
+				} catch {
+					/* almacenamiento bloqueado: se queda el tema por defecto */
+				}
+			})();
+		</script>
 	</head>
 	<body>
-		<slot />
+		<a
+			href="#contenido"
+			class="bg-accent text-accent-contrast sr-only z-50 rounded-lg px-4 py-2 font-semibold focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+			>Saltar al contenido</a
+		>
+		<slot name="header" />
+		<main id="contenido">
+			<slot />
+		</main>
+		<slot name="footer" />
+		<slot name="overlays" />
+		<script>
+			import '@/scripts/reveal';
+			import '@/scripts/spotlight';
+			import '@/scripts/filters';
+		</script>
 	</body>
 </html>
