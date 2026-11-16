@@ -80,7 +80,7 @@ test('el asistente cruza una tecnología con experiencia y proyectos (R13)', asy
 	await page.locator('#chat-input').fill('¿Tiene experiencia con React?');
 	await page.keyboard.press('Enter');
 	await expect(page.locator('[data-chat-messages]')).toContainText('React', { timeout: 20_000 });
-	await expect(page.locator('[data-chat-messages]')).toContainText('Sfotory');
+	await expect(page.locator('[data-chat-messages]')).toContainText('Softory');
 });
 
 test('el tema elegido persiste al recargar', async ({ page }) => {
