@@ -1,0 +1,62 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import FilterBar from '@/components/ui/FilterBar.astro';
+import ProjectCard from '@/components/ui/ProjectCard.astro';
+import Section from '@/components/ui/Section.astro';
+import type { CategoryOption, ProjectView } from '@/data/portfolio';
+
+interface Props {
+	projects: ProjectView[];
+	categories: CategoryOption[];
+}
+
+const { projects, categories } = Astro.props;
+---
+
+<Section
+	id="proyectos"
+	eyebrow="03 · Proyectos"
+	title="Cosas que he construido"
+	lead="Del aula a problemas reales: web, inteligencia artificial, datos, HPC, embebidos y videojuegos."
+>
+	<div data-filter-group>
+		<FilterBar label="Filtrar proyectos por área" options={categories} total={projects.length} />
+		<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				projects.map((project, index) => (
+					<li
+						data-filter-item
+						data-category={project.category}
+						data-reveal
+						style={`--reveal-delay:${(index % 3) * 90}ms`}
+					>
+						<ProjectCard project={project} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Section>
+
+<dialog
+	class="modal w-[min(44rem,calc(100vw-2rem))]"
+	data-project-dialog
+	aria-labelledby="project-dialog-title"
+>
+	<div class="relative max-h-[85vh] overflow-y-auto p-6 sm:p-9">
+		<button
+			type="button"
+			class="icon-button absolute top-4 right-4"
+			data-dialog-close
+			aria-label="Cerrar detalle"
+		>
+			<Icon name="mdi:close" class="size-5" aria-hidden="true" />
+		</button>
+		<div class="pr-10" data-project-dialog-body></div>
+	</div>
+</dialog>
+
+<script>
+	import '@/scripts/projectDialog';
+</script>

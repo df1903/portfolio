@@ -1,0 +1,168 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import TechBadge from '@/components/ui/TechBadge.astro';
+import type { ProjectView } from '@/data/portfolio';
+
+interface Props {
+	project: ProjectView;
+}
+
+const MAX_VISIBLE_TECHNOLOGIES = 6;
+
+/** Dentro de `<template>` los iconos van incrustados (ver TechBadge `inline`). */
+const inlineIcon = { 'is:inline': true };
+
+const { project } = Astro.props;
+const visibleTechnologies = project.technologies.slice(0, MAX_VISIBLE_TECHNOLOGIES);
+const hiddenCount = project.technologies.length - visibleTechnologies.length;
+---
+
+<article class="card card-interactive group flex h-full flex-col overflow-hidden">
+	<div class="bg-surface-raised relative aspect-[16/9] overflow-hidden">
+		{
+			project.image ? (
+				<Image
+					src={project.image}
+					alt={`Vista previa de ${project.title}`}
+					widths={[400, 640, 960]}
+					sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+					class="size-full object-cover transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-105"
+					loading="lazy"
+				/>
+			) : (
+				<div
+					class="from-accent/15 to-accent-alt/20 grid size-full place-items-center bg-gradient-to-br"
+					role="img"
+					aria-label={`Portada de ${project.title}`}
+				>
+					<Icon
+						name={project.coverIcon}
+						class="text-accent size-20 opacity-80 transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-110 group-hover:-rotate-6"
+						aria-hidden="true"
+					/>
+				</div>
+			)
+		}
+		<span class="chip !bg-bg/80 absolute top-3 left-3 backdrop-blur">{project.categoryLabel}</span>
+		{
+			project.featured && (
+				<span class="chip !border-accent/50 !bg-bg/80 !text-accent absolute top-3 right-3 backdrop-blur">
+					<Icon name="mdi:star-four-points" class="size-3" aria-hidden="true" />
+					Destacado
+				</span>
+			)
+		}
+	</div>
+
+	<div class="flex flex-1 flex-col p-5">
+		<h3 class="text-lg font-semibold">{project.title}</h3>
+		<p class="text-muted mt-2 flex-1 text-sm">{project.summary}</p>
+
+		<ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Tecnologías">
+			{
+				visibleTechnologies.map((technology) => (
+					<li>
+						<TechBadge name={technology.name} icon={technology.icon} compact />
+					</li>
+				))
+			}
+			{
+				hiddenCount > 0 && (
+					<li class="text-subtle grid h-8 place-items-center px-1 font-mono text-xs">
+						+{hiddenCount}
+					</li>
+				)
+			}
+		</ul>
+
+		<div class="border-line mt-5 flex items-center justify-between gap-3 border-t pt-4">
+			<button
+				type="button"
+				class="text-accent inline-flex items-center gap-1 text-sm font-semibold hover:underline"
+				data-project-open={project.id}
+			>
+				Ver detalle
+				<Icon name="mdi:chevron-right" class="size-4" aria-hidden="true" />
+			</button>
+			<div class="flex gap-2">
+				{
+					project.demo && (
+						<ExternalLink
+							href={project.demo}
+							class="icon-button !size-9"
+							aria-label={`Demo de ${project.title}`}
+						>
+							<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" />
+						</ExternalLink>
+					)
+				}
+				{
+					project.repos[0] && (
+						<ExternalLink
+							href={project.repos[0].url}
+							class="icon-button !size-9"
+							aria-label={`Repositorio de ${project.title}`}
+						>
+							<Icon name="simple-icons:github" class="size-4" aria-hidden="true" />
+						</ExternalLink>
+					)
+				}
+			</div>
+		</div>
+	</div>
+
+	<!-- Contenido del diálogo de detalle; scripts/projectDialog.ts lo clona al abrir. -->
+	<template data-project-detail={project.id}>
+		<p class="eyebrow">{project.categoryLabel}</p>
+		<h3 class="mt-2 text-2xl font-bold sm:text-3xl" data-dialog-title>{project.title}</h3>
+		{project.context && <p class="text-subtle mt-2 text-sm">{project.context}</p>}
+		<p class="text-muted mt-5">{project.description}</p>
+		{
+			project.highlights.length > 0 && (
+				<ul class="text-muted mt-5 space-y-2.5 text-sm">
+					{project.highlights.map((highlight) => (
+						<li class="flex gap-3">
+							<Icon
+								name="mdi:check-circle-outline"
+								class="text-accent mt-0.5 size-4 shrink-0"
+								aria-hidden="true"
+								{...inlineIcon}
+							/>
+							{highlight}
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+			{
+				project.technologies.map((technology) => (
+					<li>
+						<TechBadge name={technology.name} icon={technology.icon} inline />
+					</li>
+				))
+			}
+		</ul>
+		<div class="mt-7 flex flex-wrap gap-3">
+			{
+				project.demo && (
+					<ExternalLink href={project.demo} class="btn btn-primary">
+						<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" {...inlineIcon} />
+						Ver demo
+					</ExternalLink>
+				)
+			}
+			{
+				project.repos.map((repo) => (
+					<ExternalLink href={repo.url} class="btn btn-ghost">
+						<Icon name="simple-icons:github" class="size-4" aria-hidden="true" {...inlineIcon} />
+						{repo.label}
+					</ExternalLink>
+				))
+			}
+		</div>
+	</template>
+</article>
