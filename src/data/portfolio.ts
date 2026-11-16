@@ -1,6 +1,8 @@
 import { getCollection } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 
+import type { Locale } from '@/i18n/config';
+import { UI } from '@/i18n/ui';
 import { buildKnowledge, markdownToParagraphs } from '@/lib/chat/knowledge';
 import type { Knowledge } from '@/lib/chat/types';
 import {
@@ -11,6 +13,7 @@ import {
 } from '@/lib/certificates';
 import { buildContactChannels, type ContactChannel } from '@/lib/contactLinks';
 import { formatDateRange, formatLongDate } from '@/lib/formatDate';
+import { localize } from '@/lib/localize';
 import { buildTechUsage, usageCount, type TechUsage } from '@/lib/techUsage';
 
 import {
@@ -21,8 +24,8 @@ import {
 import { site } from './site';
 
 /**
- * Único punto que consulta las colecciones (IoC): resuelve referencias y entrega modelos de vista
- * planos a la página y al endpoint `/knowledge.json`. Los componentes solo reciben props.
+ * Único punto que consulta las colecciones (IoC): resuelve idioma y referencias, y entrega modelos
+ * de vista planos a las páginas y a los endpoints `knowledge.json`. Los componentes solo reciben props.
  */
 
 export interface TechnologyView {
@@ -109,6 +112,7 @@ export interface AboutView {
 }
 
 export interface Portfolio {
+	locale: Locale;
 	about: AboutView;
 	technologies: TechnologyView[];
 	technologyCategories: CategoryOption[];
@@ -124,26 +128,32 @@ export interface Portfolio {
 	knowledge: Knowledge;
 }
 
-const CONTACT_GREETING = 'Hola Daniel, vi tu portafolio';
-
 const certificateImages = import.meta.glob<{ default: ImageMetadata }>(
 	'/src/assets/certificates/*.{webp,png,jpg,jpeg,avif}',
 	{ eager: true },
 );
 
+/** Opciones de filtro: solo categorías con elementos, en el orden de `labels`. */
 function categoryOptions(
 	items: { category: string }[],
-	order: string[],
 	labels: Record<string, string>,
+	order: string[] = Object.keys(labels),
 ): CategoryOption[] {
-	return order.map((id) => ({
-		id,
-		label: labels[id] ?? id,
-		count: items.filter((item) => item.category === id).length,
-	}));
+	return order
+		.map((id) => ({
+			id,
+			label: labels[id] ?? id,
+			count: items.filter((item) => item.category === id).length,
+		}))
+		.filter((option) => option.count > 0);
 }
 
-export async function loadPortfolio(): Promise<Portfolio> {
+export async function loadPortfolio(locale: Locale): Promise<Portfolio> {
+	const ui = UI[locale];
+	const technologyLabels = TECHNOLOGY_CATEGORY_LABELS[locale];
+	const projectLabels = PROJECT_CATEGORY_LABELS[locale];
+	const certificateLabels = CERTIFICATE_CATEGORY_LABELS[locale];
+
 	const [aboutEntries, technologyEntries, projectEntries, experienceEntries] = await Promise.all([
 		getCollection('about'),
 		getCollection('technologies'),
@@ -158,7 +168,11 @@ export async function loadPortfolio(): Promise<Portfolio> {
 
 	const aboutEntry = aboutEntries[0];
 	if (!aboutEntry) throw new Error('portfolio: falta src/content/about/about.md');
-	const about: AboutView = { ...aboutEntry.data, bio: markdownToParagraphs(aboutEntry.body ?? '') };
+	// La biografía en español es el cuerpo Markdown; en inglés viene de `en.bio`.
+	const about: AboutView = {
+		bio: markdownToParagraphs(aboutEntry.body ?? ''),
+		...localize(aboutEntry.data, locale),
+	};
 
 	const sortedProjects = projectEntries.toSorted((a, b) => a.data.order - b.data.order);
 	const sortedExperience = experienceEntries.toSorted(
@@ -167,29 +181,29 @@ export async function loadPortfolio(): Promise<Portfolio> {
 
 	const usage = buildTechUsage(
 		sortedProjects.map((entry) => ({
-			label: entry.data.title,
+			label: localize(entry.data, locale).title,
 			technologyIds: entry.data.technologies.map((technology) => technology.id),
 		})),
 		sortedExperience.map((entry) => ({
-			label: `${entry.data.role} · ${entry.data.company}`,
+			label: `${localize(entry.data, locale).role} · ${entry.data.company}`,
 			technologyIds: entry.data.technologies.map((technology) => technology.id),
 		})),
 	);
 
-	const technologyCategoryOrder = Object.keys(TECHNOLOGY_CATEGORY_LABELS);
+	const technologyOrder = Object.keys(technologyLabels);
 	const technologies: TechnologyView[] = technologyEntries
 		.map((entry) => ({
 			id: entry.id,
 			...entry.data,
-			categoryLabel: TECHNOLOGY_CATEGORY_LABELS[entry.data.category] ?? entry.data.category,
+			categoryLabel: technologyLabels[entry.data.category] ?? entry.data.category,
 			usage: usage.get(entry.id) ?? { projects: [], experience: [] },
 		}))
 		// Por categoría y, dentro de cada una, primero las más usadas.
 		.toSorted(
 			(a, b) =>
-				technologyCategoryOrder.indexOf(a.category) - technologyCategoryOrder.indexOf(b.category) ||
+				technologyOrder.indexOf(a.category) - technologyOrder.indexOf(b.category) ||
 				usageCount(b.usage) - usageCount(a.usage) ||
-				a.name.localeCompare(b.name, 'es'),
+				a.name.localeCompare(b.name, locale),
 		);
 	const technologyById = new Map(technologies.map((technology) => [technology.id, technology]));
 	const resolveTechnologies = (references: { id: string }[]): TechnologyView[] =>
@@ -201,15 +215,19 @@ export async function loadPortfolio(): Promise<Portfolio> {
 
 	const projects: ProjectView[] = sortedProjects.map((entry) => ({
 		id: entry.id,
-		...entry.data,
-		categoryLabel: PROJECT_CATEGORY_LABELS[entry.data.category] ?? entry.data.category,
+		...localize(entry.data, locale),
+		categoryLabel: projectLabels[entry.data.category] ?? entry.data.category,
 		technologies: resolveTechnologies(entry.data.technologies),
+		repos: entry.data.repos.map((repo) => ({
+			label: (locale === 'en' && repo.labelEn) || repo.label,
+			url: repo.url,
+		})),
 	}));
 
 	const experience: ExperienceView[] = sortedExperience.map((entry) => ({
 		id: entry.id,
-		...entry.data,
-		period: formatDateRange(entry.data.start, entry.data.end),
+		...localize(entry.data, locale),
+		period: formatDateRange(entry.data.start, entry.data.end, locale),
 		technologies: resolveTechnologies(entry.data.technologies),
 	}));
 
@@ -217,13 +235,15 @@ export async function loadPortfolio(): Promise<Portfolio> {
 		.toSorted((a, b) => a.data.order - b.data.order)
 		.map((entry) => ({
 			id: entry.id,
-			...entry.data,
-			period: entry.data.start ? formatDateRange(entry.data.start, entry.data.end) : undefined,
+			...localize(entry.data, locale),
+			period: entry.data.start
+				? formatDateRange(entry.data.start, entry.data.end, locale)
+				: undefined,
 		}));
 
 	const skills: SkillView[] = skillEntries
 		.toSorted((a, b) => a.data.order - b.data.order)
-		.map((entry) => ({ id: entry.id, ...entry.data }));
+		.map((entry) => ({ id: entry.id, ...localize(entry.data, locale) }));
 
 	const certificates: CertificateView[] = mergeCertificates(
 		Object.fromEntries(
@@ -232,17 +252,15 @@ export async function loadPortfolio(): Promise<Portfolio> {
 		certificationEntries.map((entry) => ({ id: entry.id, ...entry.data })),
 	).map((certificate) => ({
 		...certificate,
-		categoryLabel: CERTIFICATE_CATEGORY_LABELS[certificate.category] ?? certificate.category,
-		dateLabel: certificate.date ? formatLongDate(certificate.date) : undefined,
+		categoryLabel: certificateLabels[certificate.category] ?? certificate.category,
+		dateLabel: certificate.date ? formatLongDate(certificate.date, locale) : undefined,
 	}));
 
-	const contactChannels = buildContactChannels(site.contact, CONTACT_GREETING);
-
-	const presentIn = (items: { category: string }[], order: string[]) =>
-		order.filter((id) => items.some((item) => item.category === id));
+	const contactChannels = buildContactChannels(site.contact, ui.contact);
 
 	const knowledge = buildKnowledge({
-		site,
+		locale,
+		site: { name: site.name, shortName: site.shortName, location: ui.meta.location },
 		about,
 		contactChannels,
 		studies,
@@ -260,27 +278,20 @@ export async function loadPortfolio(): Promise<Portfolio> {
 	});
 
 	return {
+		locale,
 		about,
 		technologies,
-		technologyCategories: categoryOptions(
-			technologies,
-			presentIn(technologies, Object.keys(TECHNOLOGY_CATEGORY_LABELS)),
-			TECHNOLOGY_CATEGORY_LABELS,
-		),
+		technologyCategories: categoryOptions(technologies, technologyLabels),
 		projects,
-		projectCategories: categoryOptions(
-			projects,
-			presentIn(projects, Object.keys(PROJECT_CATEGORY_LABELS)),
-			PROJECT_CATEGORY_LABELS,
-		),
+		projectCategories: categoryOptions(projects, projectLabels),
 		experience,
 		studies,
 		skills,
 		certificates,
 		certificateCategories: categoryOptions(
 			certificates,
-			certificateCategories(certificates, Object.keys(CERTIFICATE_CATEGORY_LABELS)),
-			CERTIFICATE_CATEGORY_LABELS,
+			certificateLabels,
+			certificateCategories(certificates, Object.keys(certificateLabels)),
 		),
 		certificateHours: totalCertificateHours(certificates),
 		contactChannels,
