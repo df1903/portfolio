@@ -23,7 +23,7 @@ export function hasWordStartingWith(normalizedText: string, stems: readonly stri
 	return stems.some((stem) => words.some((word) => word.startsWith(stem)));
 }
 
-export function joinList(items: string[]): string {
+export function joinList(items: string[], conjunction = 'y'): string {
 	if (items.length <= 1) return items.join('');
-	return `${items.slice(0, -1).join(', ')} y ${items[items.length - 1]}`;
+	return `${items.slice(0, -1).join(', ')} ${conjunction} ${items[items.length - 1]}`;
 }

@@ -1,10 +1,13 @@
+import type { Locale } from '@/i18n/config';
 import type { ContactChannel } from '@/lib/contactLinks';
 import { formatDateRange } from '@/lib/formatDate';
 
+import { CHAT_MESSAGES } from './messages';
 import type { Knowledge } from './types';
 
-/** Datos planos (ya resueltos por la página) a partir de los cuales se arma la base de conocimiento. */
+/** Datos planos (ya resueltos a un idioma por la página) con los que se arma la base de conocimiento. */
 export interface KnowledgeSources {
+	locale: Locale;
 	site: { name: string; shortName: string; location: string };
 	about: {
 		headline: string;
@@ -47,8 +50,6 @@ export interface KnowledgeSources {
 	certifications: { title: string; issuer?: string; date?: Date; hours?: number }[];
 }
 
-const STUDY_STATUS_LABELS = { 'in-progress': 'en curso', completed: 'finalizado' } as const;
-
 /** Extrae los párrafos de texto de un cuerpo Markdown simple (sin encabezados ni listas). */
 export function markdownToParagraphs(markdown: string): string[] {
 	return markdown
@@ -58,13 +59,15 @@ export function markdownToParagraphs(markdown: string): string[] {
 }
 
 export function buildKnowledge(sources: KnowledgeSources): Knowledge {
-	const { site, about } = sources;
-	const firstProject = sources.projects[0]?.title;
+	const { locale, site, about } = sources;
+	const messages = CHAT_MESSAGES[locale];
+	const firstName = site.shortName.split(' ')[0];
 	const firstTechnology = sources.experience[0]?.technologyIds
 		.map((id) => sources.technologies.find((technology) => technology.id === id)?.name)
 		.find(Boolean);
 
 	return {
+		locale,
 		profile: {
 			name: site.name,
 			shortName: site.shortName,
@@ -76,21 +79,21 @@ export function buildKnowledge(sources: KnowledgeSources): Knowledge {
 			languages: about.languages,
 			interests: about.interests,
 		},
-		contact: sources.contactChannels.map((channel) => ({
-			label: channel.label,
-			url: channel.href,
-		})),
+		// Un canal sin enlace (p. ej. solo usuario de WhatsApp) no se puede ofrecer como enlace en el chat.
+		contact: sources.contactChannels.flatMap((channel) =>
+			channel.href ? [{ label: channel.label, url: channel.href }] : [],
+		),
 		studies: sources.studies.map((study) => ({
 			title: study.title,
 			institution: study.institution,
-			status: STUDY_STATUS_LABELS[study.status],
+			status: messages.studyStatus[study.status],
 			summary: study.summary,
 			focusAreas: study.focusAreas,
 		})),
 		experience: sources.experience.map((job) => ({
 			company: job.company,
 			role: job.role,
-			period: formatDateRange(job.start, job.end),
+			period: formatDateRange(job.start, job.end, locale),
 			location: job.location,
 			summary: job.summary,
 			responsibilities: job.responsibilities,
@@ -105,7 +108,10 @@ export function buildKnowledge(sources: KnowledgeSources): Knowledge {
 			technologyIds: project.technologyIds,
 			links: [
 				...(project.demo ? [{ label: 'Demo', url: project.demo }] : []),
-				...project.repos.map((repo) => ({ label: `Repo · ${repo.label}`, url: repo.url })),
+				...project.repos.map((repo) => ({
+					label: messages.repoLinkLabel(repo.label),
+					url: repo.url,
+				})),
 			],
 		})),
 		technologies: sources.technologies.map((technology) => ({
@@ -121,12 +127,10 @@ export function buildKnowledge(sources: KnowledgeSources): Knowledge {
 			year: certificate.date?.getUTCFullYear(),
 			hours: certificate.hours,
 		})),
-		suggestions: [
-			'¿Quién es Daniel?',
-			'¿Qué experiencia laboral tiene?',
-			firstTechnology ? `¿Tiene experiencia con ${firstTechnology}?` : '¿Qué tecnologías maneja?',
-			firstProject ? `Háblame de ${firstProject}` : '¿Qué proyectos ha hecho?',
-			'¿Cómo lo contacto?',
-		],
+		suggestions: messages.suggestions({
+			name: firstName,
+			technology: firstTechnology,
+			project: sources.projects[0]?.title,
+		}),
 	};
 }

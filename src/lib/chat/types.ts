@@ -1,8 +1,12 @@
+import type { Locale } from '@/i18n/config';
+
 /**
- * Base de conocimiento del asistente. Se genera en build a partir de las colecciones de contenido
- * (`/knowledge.json`) y la consumen tanto el motor local como el Worker con el modelo de lenguaje.
+ * Base de conocimiento del asistente. Se genera en build, una por idioma (`/knowledge.json`,
+ * `/en/knowledge.json`), a partir de las colecciones de contenido. La consumen el motor local
+ * y el Worker con el modelo de lenguaje.
  */
 export interface Knowledge {
+	locale: Locale;
 	profile: {
 		name: string;
 		shortName: string;
