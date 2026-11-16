@@ -1,59 +1,62 @@
 /**
  * Configuración global del sitio (no es contenido de una sección).
  * Los campos opcionales vacíos simplemente no se renderizan: completa los que falten y vuelve a desplegar.
+ * Los textos traducibles (rol, descripción, menú) viven en `src/i18n/ui.ts`.
  */
 export interface SiteConfig {
 	name: string;
 	shortName: string;
 	initials: string;
-	role: string;
-	location: string;
-	description: string;
-	/** URL pública del sitio (sin barra final). Habilita canonical, Open Graph absoluto y sitemap. */
+	/** URL pública del sitio (sin barra final). Habilita canonical, hreflang y Open Graph absolutos. */
 	url?: string;
 	contact: ContactConfig;
 	/** Ruta dentro de `public/` (p. ej. `/cv-daniel-franco.pdf`). */
 	cvPath?: string;
-	nav: NavItem[];
+	/** Anclas de las secciones, en el orden del menú. */
+	sections: readonly SectionId[];
 }
 
 export interface ContactConfig {
 	email?: string;
-	/** Solo dígitos, con indicativo de país (p. ej. `573001234567`). */
+	/**
+	 * WhatsApp admite tres formas, de más a menos directa:
+	 *  - `whatsappUrl`: enlace que genera la app (Ajustes → nombre de usuario → compartir enlace).
+	 *  - `whatsappNumber`: solo dígitos con indicativo (`573001234567`); expone el número.
+	 *  - `whatsappUsername`: sin `@`; si no hay enlace ni número, la tarjeta copia el usuario.
+	 */
+	whatsappUrl?: string;
 	whatsappNumber?: string;
+	whatsappUsername?: string;
 	linkedinUrl?: string;
 	githubUser?: string;
 }
 
-export interface NavItem {
-	id: string;
-	label: string;
-}
+export const SECTION_IDS = [
+	'sobre-mi',
+	'experiencia',
+	'proyectos',
+	'tecnologias',
+	'habilidades',
+	'estudios',
+	'certificaciones',
+	'contacto',
+] as const;
+
+export type SectionId = (typeof SECTION_IDS)[number];
 
 export const site: SiteConfig = {
 	name: 'Daniel Felipe Franco Rincón',
 	shortName: 'Daniel Franco',
 	initials: 'DF',
-	role: 'Desarrollador Fullstack · Ingeniero de Sistemas en formación',
-	location: 'Manizales, Colombia',
-	description:
-		'Portafolio de Daniel Franco: desarrollador fullstack e ingeniero de sistemas en formación. Proyectos, experiencia, tecnologías y certificaciones.',
 	url: undefined,
 	contact: {
 		email: 'daniel.franco.rincon@gmail.com',
+		whatsappUrl: undefined,
 		whatsappNumber: undefined,
+		whatsappUsername: 'danielffr',
 		linkedinUrl: 'https://www.linkedin.com/in/daniel-felipe-franco-rincon-1b3b84252/',
 		githubUser: 'df1903',
 	},
 	cvPath: undefined,
-	nav: [
-		{ id: 'sobre-mi', label: 'Sobre mí' },
-		{ id: 'experiencia', label: 'Experiencia' },
-		{ id: 'proyectos', label: 'Proyectos' },
-		{ id: 'tecnologias', label: 'Tecnologías' },
-		{ id: 'habilidades', label: 'Habilidades' },
-		{ id: 'estudios', label: 'Estudios' },
-		{ id: 'certificaciones', label: 'Certificaciones' },
-		{ id: 'contacto', label: 'Contacto' },
-	],
+	sections: SECTION_IDS,
 };
