@@ -1,0 +1,12 @@
+title: Semillero de Inteligencia Artificial
+institution: Universidad de Caldas
+location: Manizales, Colombia
+status: in-progress
+summary: Grupo de investigación formativa donde profundizo en la aplicación de la inteligencia artificial al desarrollo de software.
+highlights:
+  - Exploración de agentes basados en LLM y flujos de trabajo asistidos por IA.
+  - Aplicación de lo aprendido en proyectos propios, como el analizador de complejidad algorítmica con Claude API.
+focusAreas:
+  - Agentes LLM
+  - IA aplicada al desarrollo
+order: 2
