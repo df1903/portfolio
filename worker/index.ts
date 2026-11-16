@@ -1,32 +1,24 @@
+import { DEFAULT_LOCALE, isLocale, localeRoot } from '../src/i18n/config';
 import { buildSystemPrompt, sanitizeMessages } from '../src/lib/chat/prompt';
 import type { ChatMessage, Knowledge } from '../src/lib/chat/types';
+import { handleGitHub } from './github';
+import { json, type Env } from './shared';
 
 /**
  * Worker de Cloudflare delante del sitio estático.
- * Solo atiende `POST /api/chat` (ver `run_worker_first` en wrangler.jsonc); todo lo demás lo sirven
- * los assets. Si el modelo falla o se agota la cuota gratuita responde 503 y el navegador recurre a
- * su motor local, así que el chat nunca queda inservible.
+ * Solo atiende `/api/*` (ver `run_worker_first` en wrangler.jsonc); todo lo demás lo sirven los
+ * assets. Cada endpoint degrada con un código de error y el navegador sigue sin él: el chat recurre
+ * a su motor local y el bloque de GitHub simplemente no muestra el calendario.
  */
-
-interface Env {
-	ASSETS: { fetch: (request: Request | string) => Promise<Response> };
-	AI: { run: (model: string, input: unknown) => Promise<unknown> };
-	/** Modelo de Workers AI; se cambia en wrangler.jsonc sin tocar código. */
-	CHAT_MODEL: string;
-}
 
 const MAX_BODY_BYTES = 16_000;
 const MAX_REPLY_TOKENS = 400;
 
-function json(body: unknown, status = 200): Response {
-	return new Response(JSON.stringify(body), {
-		status,
-		headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
-	});
-}
-
-async function loadKnowledge(env: Env, origin: string): Promise<Knowledge> {
-	const response = await env.ASSETS.fetch(new Request(new URL('/knowledge.json', origin)));
+async function loadKnowledge(env: Env, request: Request, locale: unknown): Promise<Knowledge> {
+	const root = localeRoot(isLocale(locale) ? locale : DEFAULT_LOCALE);
+	const response = await env.ASSETS.fetch(
+		new Request(new URL(`${root}knowledge.json`, request.url)),
+	);
 	if (!response.ok) throw new Error(`knowledge.json: HTTP ${response.status}`);
 	return (await response.json()) as Knowledge;
 }
@@ -52,14 +44,17 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
 	if (raw.length > MAX_BODY_BYTES) return json({ error: 'payload_too_large' }, 413);
 
 	let messages: ChatMessage[];
+	let locale: unknown;
 	try {
-		messages = sanitizeMessages((JSON.parse(raw) as { messages?: unknown }).messages);
+		const body = JSON.parse(raw) as { messages?: unknown; locale?: unknown };
+		messages = sanitizeMessages(body.messages);
+		locale = body.locale;
 	} catch {
 		return json({ error: 'invalid_request' }, 400);
 	}
 
 	try {
-		const knowledge = await loadKnowledge(env, request.url);
+		const knowledge = await loadKnowledge(env, request, locale);
 		const result = await env.AI.run(env.CHAT_MODEL, {
 			messages: [{ role: 'system', content: buildSystemPrompt(knowledge) }, ...messages],
 			max_tokens: MAX_REPLY_TOKENS,
@@ -74,8 +69,15 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
 }
 
 export default {
-	async fetch(request: Request, env: Env): Promise<Response> {
-		if (new URL(request.url).pathname === '/api/chat') return handleChat(request, env);
+	async fetch(request: Request, env: Env, context: ExecutionContextLike): Promise<Response> {
+		const { pathname } = new URL(request.url);
+		if (pathname === '/api/chat') return handleChat(request, env);
+		if (pathname === '/api/github') return handleGitHub(request, env, context);
+		if (pathname.startsWith('/api/')) return json({ error: 'not_found' }, 404);
 		return env.ASSETS.fetch(request);
 	},
 };
+
+interface ExecutionContextLike {
+	waitUntil: (promise: Promise<unknown>) => void;
+}
