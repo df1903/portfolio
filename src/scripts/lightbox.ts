@@ -24,7 +24,7 @@ if (dialog && gallery) {
 		index = (nextIndex + sequence.length) % sequence.length;
 		const { lightboxSrc = '', lightboxTitle = '', lightboxCaption = '' } = sequence[index].dataset;
 		image.src = lightboxSrc;
-		image.alt = `Certificado: ${lightboxTitle}`;
+		image.alt = [dialog.dataset.altPrefix, lightboxTitle].filter(Boolean).join(': ');
 		heading.textContent = lightboxTitle;
 		subheading.textContent = lightboxCaption;
 		counter.textContent = `${index + 1} / ${sequence.length}`;

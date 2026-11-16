@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 
 import ExternalLink from '@/components/ui/ExternalLink.astro';
 import type { AboutView, TechnologyView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 import type { ContactChannel } from '@/lib/contactLinks';
 
 interface Stat {
@@ -12,8 +13,8 @@ interface Stat {
 }
 
 interface Props {
+	t: UiStrings;
 	name: string;
-	location: string;
 	about: AboutView;
 	stats: Stat[];
 	featuredTechnologies: TechnologyView[];
@@ -21,8 +22,9 @@ interface Props {
 	cvPath?: string;
 }
 
-const { name, location, about, stats, featuredTechnologies, channels, cvPath } = Astro.props;
+const { t, name, about, stats, featuredTechnologies, channels, cvPath } = Astro.props;
 const [firstName, ...restOfName] = name.split(' ');
+const linkedChannels = channels.filter((channel) => channel.href);
 
 /** Perfil "como código". Se arma como HTML porque dentro de <pre> cada espacio cuenta. */
 const escapeHtml = (text: string) =>
@@ -34,13 +36,14 @@ const key = (name: string) => `  <span class="text-subtle">${name}</span>: `;
 const text = (value: string) => `<span class="text-accent">'${escapeHtml(value)}'</span>`;
 const list = (values: string[]) =>
 	['[', ...values.map((value) => `    ${text(value)},`), '  ]'].join('\n');
+const code = t.hero.code;
 const profileCode = [
 	'<span class="text-accent-alt">const</span> <span class="text-fg">daniel</span> = {',
-	`${key('rol')}${text('Fullstack Developer')},`,
-	`${key('formacion')}${text('Ing. de Sistemas')},`,
-	`${key('enfoque')}${list(about.interests.slice(0, 3))},`,
-	`${key('idiomas')}${list(about.languages.map((language) => `${language.name} (${language.level})`))},`,
-	`${key('aprendeRapido')}<span class="text-accent-alt">true</span>,`,
+	`${key(code.role)}${text(code.roleValue)},`,
+	`${key(code.education)}${text(code.educationValue)},`,
+	`${key(code.focus)}${list(about.interests.slice(0, 3))},`,
+	`${key(code.languages)}${list(about.languages.map((language) => `${language.name} (${language.level})`))},`,
+	`${key(code.fastLearner)}<span class="text-accent-alt">true</span>,`,
 	'};',
 ].join('\n');
 ---
@@ -63,7 +66,7 @@ const profileCode = [
 					></span>
 					<span class="bg-accent relative inline-flex size-2 rounded-full"></span>
 				</span>
-				Abierto a oportunidades · {location}
+				{t.hero.available} · {t.meta.location}
 			</p>
 
 			<h1
@@ -71,7 +74,7 @@ const profileCode = [
 				data-reveal
 				style="--reveal-delay:80ms"
 			>
-				<span class="text-muted block text-xl font-medium sm:text-2xl">Hola, soy</span>
+				<span class="text-muted block text-xl font-medium sm:text-2xl">{t.hero.greeting}</span>
 				{firstName}
 				<span class="gradient-text">{restOfName.join(' ')}</span>
 			</h1>
@@ -91,18 +94,18 @@ const profileCode = [
 
 			<div class="mt-8 flex flex-wrap gap-3" data-reveal style="--reveal-delay:320ms">
 				<a href="#proyectos" class="btn btn-primary">
-					Ver proyectos
+					{t.hero.viewProjects}
 					<Icon name="mdi:arrow-down" class="size-4" aria-hidden="true" />
 				</a>
 				<button type="button" class="btn btn-ghost" data-chat-open>
 					<Icon name="mdi:creation" class="text-accent size-4" aria-hidden="true" />
-					Pregúntale a mi IA
+					{t.hero.askAssistant}
 				</button>
 				{
 					cvPath && (
 						<a href={cvPath} class="btn btn-ghost" download>
 							<Icon name="mdi:download" class="size-4" aria-hidden="true" />
-							Descargar CV
+							{t.hero.downloadCv}
 						</a>
 					)
 				}
@@ -110,9 +113,9 @@ const profileCode = [
 
 			<ul class="mt-8 flex gap-2" data-reveal style="--reveal-delay:400ms">
 				{
-					channels.map((channel) => (
+					linkedChannels.map((channel) => (
 						<li>
-							<ExternalLink href={channel.href} class="icon-button" aria-label={channel.label}>
+							<ExternalLink href={channel.href!} class="icon-button" aria-label={channel.label}>
 								<Icon name={channel.icon} class="size-5" aria-hidden="true" />
 							</ExternalLink>
 						</li>
@@ -158,7 +161,7 @@ const profileCode = [
 
 		<div
 			class="marquee mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]"
-			aria-label="Tecnologías principales"
+			aria-label={t.hero.mainTechnologies}
 			data-reveal
 		>
 			<ul class="marquee-track flex w-max gap-3">

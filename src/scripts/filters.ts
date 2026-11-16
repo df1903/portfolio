@@ -2,7 +2,7 @@
  * Filtro genérico por categoría. Marcado esperado dentro de `[data-filter-group]`:
  *   botones `[data-filter="<categoría>|all"]` y elementos `[data-filter-item][data-category]`.
  * Opcional: `data-filter-limit="N"` colapsa la vista "Todos" a N elementos con un botón
- * `[data-filter-more]` para desplegar el resto.
+ * `[data-filter-more]` (con `data-less-label`) para desplegar el resto.
  */
 
 function initFilterGroup(group: HTMLElement): void {
@@ -34,7 +34,9 @@ function initFilterGroup(group: HTMLElement): void {
 		if (moreWrapper && moreButton && moreLabel) {
 			moreWrapper.hidden = !collapsible;
 			moreButton.setAttribute('aria-expanded', String(expanded));
-			moreLabel.textContent = expanded ? 'Ver menos' : expandLabel;
+			moreLabel.textContent = expanded
+				? (moreButton.dataset.lessLabel ?? expandLabel)
+				: expandLabel;
 		}
 	};
 

@@ -4,26 +4,29 @@ import { Icon } from 'astro-icon/components';
 import FilterBar from '@/components/ui/FilterBar.astro';
 import Section from '@/components/ui/Section.astro';
 import type { CategoryOption, TechnologyView } from '@/data/portfolio';
+import { fill, type UiStrings } from '@/i18n/ui';
 import { usageCount } from '@/lib/techUsage';
 
 interface Props {
+	t: UiStrings;
 	technologies: TechnologyView[];
 	categories: CategoryOption[];
 }
 
-const { technologies, categories } = Astro.props;
+const { t, technologies, categories } = Astro.props;
 ---
 
 <Section
 	id="tecnologias"
-	eyebrow="04 · Tecnologías"
-	title="Mi caja de herramientas"
-	lead="Toca una tecnología para ver en qué proyectos y trabajos la he usado."
+	eyebrow={`04 · ${t.technologies.eyebrow}`}
+	title={t.technologies.title}
+	lead={t.technologies.lead}
 	tinted
 >
-	<div data-filter-group data-tech-explorer>
+	<div data-filter-group data-tech-explorer data-title-template={t.technologies.whereUsed}>
 		<FilterBar
-			label="Filtrar tecnologías por categoría"
+			label={t.technologies.filterLabel}
+			allLabel={t.common.all}
 			options={categories}
 			total={technologies.length}
 		/>
@@ -52,7 +55,7 @@ const { technologies, categories } = Astro.props;
 								{count > 0 && (
 									<span
 										class="bg-accent/15 text-accent absolute top-2 right-2 grid size-5 place-items-center rounded-full font-mono text-[0.65rem]"
-										title={`Usada en ${count} ${count === 1 ? 'lugar' : 'lugares'}`}
+										title={fill(t.technologies.usedIn, { count })}
 									>
 										{count}
 									</span>
@@ -68,17 +71,15 @@ const { technologies, categories } = Astro.props;
 			<h3 class="text-lg font-semibold" data-tech-panel-title></h3>
 			<div class="mt-4 grid gap-6 sm:grid-cols-2">
 				<div data-tech-panel-group="experience">
-					<p class="eyebrow">Experiencia laboral</p>
+					<p class="eyebrow">{t.technologies.work}</p>
 					<ul class="text-muted mt-3 space-y-2 text-sm"></ul>
 				</div>
 				<div data-tech-panel-group="projects">
-					<p class="eyebrow">Proyectos</p>
+					<p class="eyebrow">{t.technologies.projects}</p>
 					<ul class="text-muted mt-3 space-y-2 text-sm"></ul>
 				</div>
 			</div>
-			<p class="text-muted text-sm" data-tech-panel-empty hidden>
-				Hace parte de mi stack de trabajo, aunque no está ligada a un proyecto publicado aquí.
-			</p>
+			<p class="text-muted text-sm" data-tech-panel-empty hidden>{t.technologies.notLinked}</p>
 		</div>
 	</div>
 </Section>

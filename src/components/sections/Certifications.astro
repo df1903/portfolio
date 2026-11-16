@@ -5,8 +5,10 @@ import { Icon } from 'astro-icon/components';
 import FilterBar from '@/components/ui/FilterBar.astro';
 import Section from '@/components/ui/Section.astro';
 import type { CategoryOption, CertificateView } from '@/data/portfolio';
+import { fill, type UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	certificates: CertificateView[];
 	categories: CategoryOption[];
 	totalHours: number;
@@ -16,7 +18,8 @@ interface Props {
 const INITIAL_VISIBLE = 9;
 const FULL_IMAGE_WIDTH = 1600;
 
-const { certificates, categories, totalHours } = Astro.props;
+const { t, certificates, categories, totalHours } = Astro.props;
+const strings = t.certifications;
 
 const items = await Promise.all(
 	certificates.map(async (certificate) => ({
@@ -25,17 +28,17 @@ const items = await Promise.all(
 		caption: [certificate.issuer, certificate.dateLabel].filter(Boolean).join(' · '),
 	})),
 );
+const lead = fill(totalHours > 0 ? strings.lead : strings.leadNoHours, {
+	count: certificates.length,
+	hours: totalHours,
+});
 ---
 
-<Section
-	id="certificaciones"
-	eyebrow="07 · Certificaciones"
-	title="Aprendizaje continuo"
-	lead={`${certificates.length} certificados${totalHours > 0 ? ` y ${totalHours} horas de formación` : ''}. Toca cualquiera para verlo completo.`}
->
+<Section id="certificaciones" eyebrow={`07 · ${strings.eyebrow}`} title={strings.title} lead={lead}>
 	<div data-filter-group data-filter-limit={INITIAL_VISIBLE} data-lightbox-gallery>
 		<FilterBar
-			label="Filtrar certificados por tema"
+			label={strings.filterLabel}
+			allLabel={t.common.all}
 			options={categories}
 			total={certificates.length}
 		/>
@@ -54,7 +57,7 @@ const items = await Promise.all(
 							<span class="relative block aspect-[4/3] overflow-hidden bg-white">
 								<Image
 									src={certificate.image}
-									alt={`Certificado: ${certificate.title}`}
+									alt={`${strings.certificate}: ${certificate.title}`}
 									widths={[360, 540, 720]}
 									sizes="(min-width: 1024px) 350px, (min-width: 640px) 50vw, 100vw"
 									class="size-full object-cover transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-105"
@@ -63,7 +66,7 @@ const items = await Promise.all(
 								<span class="bg-bg/70 absolute inset-0 grid place-items-center opacity-0 backdrop-blur-[2px] transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
 									<span class="btn btn-primary !py-2 text-sm">
 										<Icon name="mdi:magnify" class="size-4" aria-hidden="true" />
-										Ver completo
+										{strings.viewFull}
 									</span>
 								</span>
 							</span>
@@ -86,8 +89,14 @@ const items = await Promise.all(
 		</ul>
 
 		<div class="mt-8 text-center" data-filter-more-wrapper hidden>
-			<button type="button" class="btn btn-ghost" data-filter-more aria-expanded="false">
-				<span data-filter-more-label>Ver todos los certificados</span>
+			<button
+				type="button"
+				class="btn btn-ghost"
+				data-filter-more
+				data-less-label={strings.viewLess}
+				aria-expanded="false"
+			>
+				<span data-filter-more-label>{strings.viewAll}</span>
 				<Icon name="mdi:chevron-down" class="size-4" aria-hidden="true" />
 			</button>
 		</div>
@@ -97,6 +106,7 @@ const items = await Promise.all(
 <dialog
 	class="modal w-[min(64rem,calc(100vw-1.5rem))]"
 	data-lightbox
+	data-alt-prefix={strings.certificate}
 	aria-labelledby="lightbox-title"
 >
 	<figure class="relative">
@@ -115,23 +125,13 @@ const items = await Promise.all(
 			</div>
 			<div class="flex shrink-0 items-center gap-2">
 				<span class="text-subtle mr-1 font-mono text-xs" data-lightbox-counter></span>
-				<button
-					type="button"
-					class="icon-button"
-					data-lightbox-prev
-					aria-label="Certificado anterior"
-				>
+				<button type="button" class="icon-button" data-lightbox-prev aria-label={strings.previous}>
 					<Icon name="mdi:chevron-left" class="size-5" aria-hidden="true" />
 				</button>
-				<button
-					type="button"
-					class="icon-button"
-					data-lightbox-next
-					aria-label="Certificado siguiente"
-				>
+				<button type="button" class="icon-button" data-lightbox-next aria-label={strings.next}>
 					<Icon name="mdi:chevron-right" class="size-5" aria-hidden="true" />
 				</button>
-				<button type="button" class="icon-button" data-dialog-close aria-label="Cerrar">
+				<button type="button" class="icon-button" data-dialog-close aria-label={t.common.close}>
 					<Icon name="mdi:close" class="size-5" aria-hidden="true" />
 				</button>
 			</div>

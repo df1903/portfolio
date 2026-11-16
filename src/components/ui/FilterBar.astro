@@ -4,11 +4,13 @@ import type { CategoryOption } from '@/data/portfolio';
 interface Props {
 	/** Nombre accesible del grupo de filtros. */
 	label: string;
+	/** Texto del filtro que muestra todo. */
+	allLabel: string;
 	options: CategoryOption[];
 	total: number;
 }
 
-const { label, options, total } = Astro.props;
+const { label, allLabel, options, total } = Astro.props;
 ---
 
 <div
@@ -18,7 +20,8 @@ const { label, options, total } = Astro.props;
 	data-reveal
 >
 	<button type="button" class="filter-pill" data-filter="all" aria-pressed="true">
-		Todos <span class="count">{total}</span>
+		{allLabel}
+		<span class="count">{total}</span>
 	</button>
 	{
 		options.map((option) => (

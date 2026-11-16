@@ -1,12 +1,18 @@
 ---
 import { Icon } from 'astro-icon/components';
 
+import { localeRoot, type Locale } from '@/i18n/config';
+import { fill, type UiStrings } from '@/i18n/ui';
+
 interface Props {
+	locale: Locale;
+	t: UiStrings;
 	ownerName: string;
 	suggestions: string[];
 }
 
-const { ownerName, suggestions } = Astro.props;
+const { locale, t, ownerName, suggestions } = Astro.props;
+const name = { name: ownerName };
 ---
 
 <button
@@ -14,16 +20,23 @@ const { ownerName, suggestions } = Astro.props;
 	class="bg-accent text-accent-contrast fixed right-5 bottom-5 z-40 grid size-14 [animation:pulse-ring_2.4s_ease-out_infinite] place-items-center rounded-2xl shadow-(--shadow) transition-transform hover:-translate-y-1 hover:scale-105"
 	data-chat-open
 	data-chat-launcher
-	aria-label={`Abrir el asistente de ${ownerName}`}
+	aria-label={fill(t.chat.open, name)}
 >
 	<Icon name="mdi:chat-processing-outline" class="size-7" aria-hidden="true" />
 </button>
 
+<!-- Los textos que usa scripts/chat.ts viajan como data-*: el script no conoce el idioma. -->
 <section
 	class="border-line-strong bg-surface fixed inset-x-3 bottom-3 z-50 flex max-h-[min(40rem,calc(100dvh-1.5rem))] flex-col overflow-hidden rounded-2xl border shadow-(--shadow) sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[25rem]"
 	data-chat-panel
-	data-owner={ownerName}
-	aria-label={`Asistente de ${ownerName}`}
+	data-locale={locale}
+	data-knowledge-url={`${localeRoot(locale)}knowledge.json`}
+	data-welcome={fill(t.chat.welcome, name)}
+	data-error={t.chat.error}
+	data-typing={t.chat.typing}
+	data-view-section={t.chat.viewSection}
+	data-go-to-contact={t.chat.goToContact}
+	aria-label={fill(t.chat.title, name)}
 	hidden
 >
 	<header class="border-line bg-surface-raised flex items-center gap-3 border-b px-4 py-3">
@@ -31,12 +44,10 @@ const { ownerName, suggestions } = Astro.props;
 			<Icon name="mdi:creation" class="size-5" aria-hidden="true" />
 		</span>
 		<div class="min-w-0 flex-1">
-			<h2 class="font-display text-sm leading-tight font-semibold">Asistente de {ownerName}</h2>
-			<p class="text-subtle truncate text-xs" data-chat-status>
-				Responde sobre su perfil profesional
-			</p>
+			<h2 class="font-display text-sm leading-tight font-semibold">{fill(t.chat.title, name)}</h2>
+			<p class="text-subtle truncate text-xs">{t.chat.subtitle}</p>
 		</div>
-		<button type="button" class="icon-button !size-9" data-chat-close aria-label="Cerrar asistente">
+		<button type="button" class="icon-button !size-9" data-chat-close aria-label={t.chat.close}>
 			<Icon name="mdi:close" class="size-5" aria-hidden="true" />
 		</button>
 	</header>
@@ -52,7 +63,7 @@ const { ownerName, suggestions } = Astro.props;
 	<ul
 		class="flex gap-2 overflow-x-auto px-4 pb-3"
 		data-chat-suggestions
-		aria-label="Preguntas sugeridas"
+		aria-label={t.chat.suggestions}
 	>
 		{
 			suggestions.map((suggestion) => (
@@ -66,18 +77,18 @@ const { ownerName, suggestions } = Astro.props;
 	</ul>
 
 	<form class="border-line flex items-center gap-2 border-t p-3" data-chat-form>
-		<label class="sr-only" for="chat-input">Tu pregunta</label>
+		<label class="sr-only" for="chat-input">{t.chat.inputLabel}</label>
 		<input
 			id="chat-input"
 			type="text"
 			name="question"
 			class="border-line bg-bg placeholder:text-subtle focus:border-accent min-w-0 flex-1 rounded-xl border px-3.5 py-2.5 text-sm outline-none"
-			placeholder="Pregunta por experiencia, proyectos…"
+			placeholder={t.chat.placeholder}
 			maxlength="500"
 			autocomplete="off"
 			required
 		/>
-		<button type="submit" class="btn btn-primary !px-3 !py-2.5" aria-label="Enviar pregunta">
+		<button type="submit" class="btn btn-primary !px-3 !py-2.5" aria-label={t.chat.send}>
 			<Icon name="mdi:send" class="size-4" aria-hidden="true" />
 		</button>
 	</form>

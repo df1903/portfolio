@@ -24,7 +24,8 @@ function initMobileMenu(): void {
 	const setOpen = (open: boolean) => {
 		menu.hidden = !open;
 		toggle.setAttribute('aria-expanded', String(open));
-		toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+		const label = open ? toggle.dataset.closeLabel : toggle.dataset.openLabel;
+		if (label) toggle.setAttribute('aria-label', label);
 		toggle.querySelector<SVGElement>('[data-menu-icon="closed"]')?.toggleAttribute('hidden', open);
 		toggle.querySelector<SVGElement>('[data-menu-icon="open"]')?.toggleAttribute('hidden', !open);
 	};

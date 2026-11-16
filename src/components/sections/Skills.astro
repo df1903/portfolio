@@ -3,24 +3,26 @@ import { Icon } from 'astro-icon/components';
 
 import Section from '@/components/ui/Section.astro';
 import type { SkillView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	skills: SkillView[];
 }
 
-const { skills } = Astro.props;
+const { t, skills } = Astro.props;
 const softSkills = skills.filter((skill) => skill.kind === 'soft');
 const fundamentals = skills.filter((skill) => skill.kind === 'fundamental');
 ---
 
 <Section
 	id="habilidades"
-	eyebrow="05 · Habilidades"
-	title="Cómo trabajo y qué domino"
-	lead="Más allá de las herramientas: la forma de pensar y colaborar que llevo a cada proyecto."
+	eyebrow={`05 · ${t.skills.eyebrow}`}
+	title={t.skills.title}
+	lead={t.skills.lead}
 >
 	<h3 class="text-subtle mb-5 font-mono text-xs tracking-widest uppercase" data-reveal>
-		Habilidades blandas
+		{t.skills.soft}
 	</h3>
 	<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{
@@ -41,7 +43,7 @@ const fundamentals = skills.filter((skill) => skill.kind === 'fundamental');
 	</ul>
 
 	<h3 class="text-subtle mt-14 mb-5 font-mono text-xs tracking-widest uppercase" data-reveal>
-		Fundamentos
+		{t.skills.fundamentals}
 	</h3>
 	<ul class="grid gap-4 lg:grid-cols-2">
 		{

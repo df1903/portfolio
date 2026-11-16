@@ -1,15 +1,21 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import type { NavItem } from '@/data/site';
+import type { SectionId } from '@/data/site';
+import { LOCALES, localeRoot, type Locale } from '@/i18n/config';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	locale: Locale;
+	t: UiStrings;
 	initials: string;
 	name: string;
-	nav: NavItem[];
+	sections: readonly SectionId[];
 }
 
-const { initials, name, nav } = Astro.props;
+const { locale, t, initials, name, sections } = Astro.props;
+// Con dos idiomas, el selector es un enlace directo al otro.
+const otherLocale = LOCALES.find((candidate) => candidate !== locale) ?? locale;
 ---
 
 <header
@@ -17,7 +23,11 @@ const { initials, name, nav } = Astro.props;
 	data-header
 >
 	<div class="container-page flex h-16 items-center justify-between gap-4">
-		<a href="#inicio" class="group flex items-center gap-2.5" aria-label={`${name} — inicio`}>
+		<a
+			href="#inicio"
+			class="group flex items-center gap-2.5"
+			aria-label={`${name} — ${t.header.home}`}
+		>
 			<span
 				class="bg-accent text-accent-contrast font-display grid size-9 place-items-center rounded-xl text-sm font-bold transition-transform group-hover:-rotate-6"
 				>{initials}</span
@@ -28,17 +38,17 @@ const { initials, name, nav } = Astro.props;
 			>
 		</a>
 
-		<nav aria-label="Secciones" class="hidden lg:block">
+		<nav aria-label={t.header.sections} class="hidden lg:block">
 			<ul class="flex items-center gap-1">
 				{
-					nav.map((item) => (
+					sections.map((id) => (
 						<li>
 							<a
-								href={`#${item.id}`}
-								data-nav-link={item.id}
+								href={`#${id}`}
+								data-nav-link={id}
 								class="text-muted hover:text-fg aria-[current=true]:bg-surface-raised aria-[current=true]:text-fg rounded-lg px-2.5 py-2 text-sm whitespace-nowrap transition-colors"
 							>
-								{item.label}
+								{t.nav[id]}
 							</a>
 						</li>
 					))
@@ -53,9 +63,20 @@ const { initials, name, nav } = Astro.props;
 				data-chat-open
 			>
 				<Icon name="mdi:creation" class="text-accent size-4" aria-hidden="true" />
-				Asistente IA
+				{t.header.assistant}
 			</button>
-			<button type="button" class="icon-button" data-theme-toggle aria-label="Cambiar tema">
+			<a
+				href={localeRoot(otherLocale)}
+				hreflang={otherLocale}
+				lang={otherLocale}
+				class="icon-button font-mono text-xs font-semibold uppercase"
+				aria-label={t.header.switchLanguage}
+				title={t.header.switchLanguage}
+				data-language-switch
+			>
+				{otherLocale}
+			</a>
+			<button type="button" class="icon-button" data-theme-toggle aria-label={t.header.toggleTheme}>
 				<Icon
 					name="mdi:white-balance-sunny"
 					class="size-5"
@@ -68,7 +89,9 @@ const { initials, name, nav } = Astro.props;
 				type="button"
 				class="icon-button lg:hidden"
 				data-menu-toggle
-				aria-label="Abrir menú"
+				data-open-label={t.header.openMenu}
+				data-close-label={t.header.closeMenu}
+				aria-label={t.header.openMenu}
 				aria-expanded="false"
 				aria-controls="mobile-menu"
 			>
@@ -80,20 +103,20 @@ const { initials, name, nav } = Astro.props;
 
 	<nav
 		id="mobile-menu"
-		aria-label="Secciones (móvil)"
+		aria-label={t.header.sectionsMobile}
 		class="border-line bg-bg border-t lg:hidden"
 		hidden
 	>
 		<ul class="container-page grid grid-cols-2 gap-1 py-4">
 			{
-				nav.map((item) => (
+				sections.map((id) => (
 					<li>
 						<a
-							href={`#${item.id}`}
-							data-nav-link={item.id}
+							href={`#${id}`}
+							data-nav-link={id}
 							class="text-muted hover:bg-surface hover:text-fg aria-[current=true]:text-accent block rounded-lg px-3 py-2.5 text-sm"
 						>
-							{item.label}
+							{t.nav[id]}
 						</a>
 					</li>
 				))

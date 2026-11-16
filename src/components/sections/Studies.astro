@@ -3,21 +3,22 @@ import { Icon } from 'astro-icon/components';
 
 import Section from '@/components/ui/Section.astro';
 import type { StudyView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	studies: StudyView[];
 }
 
-const STATUS_LABELS = { 'in-progress': 'En curso', completed: 'Finalizado' } as const;
-
-const { studies } = Astro.props;
+const { t, studies } = Astro.props;
+const statusLabels = { 'in-progress': t.studies.inProgress, completed: t.studies.completed };
 ---
 
 <Section
 	id="estudios"
-	eyebrow="06 · Estudios"
-	title="Formación académica"
-	lead="La base universitaria sobre la que construyo todo lo demás."
+	eyebrow={`06 · ${t.studies.eyebrow}`}
+	title={t.studies.title}
+	lead={t.studies.lead}
 	tinted
 >
 	<ul class="grid gap-6 lg:grid-cols-2">
@@ -32,7 +33,7 @@ const { studies } = Astro.props;
 						<span class="bg-accent/12 text-accent grid size-12 shrink-0 place-items-center rounded-xl">
 							<Icon name="mdi:school-outline" class="size-6" aria-hidden="true" />
 						</span>
-						<span class="chip !border-accent/40 !text-accent">{STATUS_LABELS[study.status]}</span>
+						<span class="chip !border-accent/40 !text-accent">{statusLabels[study.status]}</span>
 					</div>
 					<h3 class="mt-5 text-xl font-semibold">{study.title}</h3>
 					<p class="text-accent mt-1 font-medium">{study.institution}</p>
@@ -58,7 +59,7 @@ const { studies } = Astro.props;
 					)}
 
 					{study.focusAreas.length > 0 && (
-						<ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Áreas de enfoque">
+						<ul class="mt-5 flex flex-wrap gap-1.5" aria-label={t.studies.focusAreas}>
 							{study.focusAreas.map((area) => (
 								<li class="chip !text-xs">{area}</li>
 							))}

@@ -3,15 +3,22 @@ import { Icon } from 'astro-icon/components';
 
 import Section from '@/components/ui/Section.astro';
 import type { AboutView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	about: AboutView;
 }
 
-const { about } = Astro.props;
+const { t, about } = Astro.props;
 ---
 
-<Section id="sobre-mi" eyebrow="01 · Sobre mí" title="Quién soy" lead={about.headline}>
+<Section
+	id="sobre-mi"
+	eyebrow={`01 · ${t.about.eyebrow}`}
+	title={t.about.title}
+	lead={about.headline}
+>
 	<div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
 		<div class="text-muted space-y-5 text-lg" data-reveal>
 			{about.bio.map((paragraph) => <p>{paragraph}</p>)}
@@ -25,7 +32,7 @@ const { about } = Astro.props;
 			<article class="card p-6" data-reveal style="--reveal-delay:100ms">
 				<h3 class="flex items-center gap-2 text-base font-semibold">
 					<Icon name="mdi:rocket-launch-outline" class="text-accent size-5" aria-hidden="true" />
-					En qué estoy ahora
+					{t.about.currently}
 				</h3>
 				<ul class="text-muted mt-4 space-y-3 text-sm">
 					{
@@ -42,7 +49,7 @@ const { about } = Astro.props;
 			<article class="card p-6" data-reveal style="--reveal-delay:180ms">
 				<h3 class="flex items-center gap-2 text-base font-semibold">
 					<Icon name="mdi:translate" class="text-accent size-5" aria-hidden="true" />
-					Idiomas
+					{t.about.languages}
 				</h3>
 				<dl class="mt-4 space-y-2 text-sm">
 					{

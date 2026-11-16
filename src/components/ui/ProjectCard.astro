@@ -5,14 +5,16 @@ import { Icon } from 'astro-icon/components';
 import ExternalLink from '@/components/ui/ExternalLink.astro';
 import TechBadge from '@/components/ui/TechBadge.astro';
 import type { ProjectView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	project: ProjectView;
 }
 
 const MAX_VISIBLE_TECHNOLOGIES = 6;
 
-const { project } = Astro.props;
+const { t, project } = Astro.props;
 const visibleTechnologies = project.technologies.slice(0, MAX_VISIBLE_TECHNOLOGIES);
 const hiddenCount = project.technologies.length - visibleTechnologies.length;
 ---
@@ -23,7 +25,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 			project.image ? (
 				<Image
 					src={project.image}
-					alt={`Vista previa de ${project.title}`}
+					alt={`${t.projects.previewOf} ${project.title}`}
 					widths={[400, 640, 960]}
 					sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
 					class="size-full object-cover transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-105"
@@ -33,7 +35,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 				<div
 					class="from-accent/15 to-accent-alt/20 grid size-full place-items-center bg-gradient-to-br"
 					role="img"
-					aria-label={`Portada de ${project.title}`}
+					aria-label={`${t.projects.coverOf} ${project.title}`}
 				>
 					<Icon
 						name={project.coverIcon}
@@ -48,7 +50,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 			project.featured && (
 				<span class="chip !border-accent/50 !bg-bg/80 !text-accent absolute top-3 right-3 backdrop-blur">
 					<Icon name="mdi:star-four-points" class="size-3" aria-hidden="true" />
-					Destacado
+					{t.projects.featured}
 				</span>
 			)
 		}
@@ -58,7 +60,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 		<h3 class="text-lg font-semibold">{project.title}</h3>
 		<p class="text-muted mt-2 flex-1 text-sm">{project.summary}</p>
 
-		<ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Tecnologías">
+		<ul class="mt-4 flex flex-wrap gap-1.5" aria-label={t.common.technologies}>
 			{
 				visibleTechnologies.map((technology) => (
 					<li>
@@ -81,7 +83,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 				class="text-accent inline-flex items-center gap-1 text-sm font-semibold hover:underline"
 				data-project-open={project.id}
 			>
-				Ver detalle
+				{t.projects.viewDetail}
 				<Icon name="mdi:chevron-right" class="size-4" aria-hidden="true" />
 			</button>
 			<div class="flex gap-2">
@@ -90,7 +92,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 						<ExternalLink
 							href={project.demo}
 							class="icon-button !size-9"
-							aria-label={`Demo de ${project.title}`}
+							aria-label={`${t.projects.demoOf} ${project.title}`}
 						>
 							<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" />
 						</ExternalLink>
@@ -101,7 +103,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 						<ExternalLink
 							href={project.repos[0].url}
 							class="icon-button !size-9"
-							aria-label={`Repositorio de ${project.title}`}
+							aria-label={`${t.projects.repoOf} ${project.title}`}
 						>
 							<Icon name="simple-icons:github" class="size-4" aria-hidden="true" />
 						</ExternalLink>
@@ -137,7 +139,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 				</ul>
 			)
 		}
-		<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías">
+		<ul class="mt-6 flex flex-wrap gap-2" aria-label={t.common.technologies}>
 			{
 				project.technologies.map((technology) => (
 					<li>
@@ -151,7 +153,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 				project.demo && (
 					<ExternalLink href={project.demo} class="btn btn-primary">
 						<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" />
-						Ver demo
+						{t.projects.viewDemo}
 					</ExternalLink>
 				)
 			}

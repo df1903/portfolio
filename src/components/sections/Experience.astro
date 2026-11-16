@@ -4,19 +4,21 @@ import { Icon } from 'astro-icon/components';
 import Section from '@/components/ui/Section.astro';
 import TechBadge from '@/components/ui/TechBadge.astro';
 import type { ExperienceView } from '@/data/portfolio';
+import type { UiStrings } from '@/i18n/ui';
 
 interface Props {
+	t: UiStrings;
 	experience: ExperienceView[];
 }
 
-const { experience } = Astro.props;
+const { t, experience } = Astro.props;
 ---
 
 <Section
 	id="experiencia"
-	eyebrow="02 · Experiencia"
-	title="Trayectoria profesional"
-	lead="Dónde he trabajado, qué hice y con qué tecnologías."
+	eyebrow={`02 · ${t.experience.eyebrow}`}
+	title={t.experience.title}
+	lead={t.experience.lead}
 	tinted
 >
 	<ol class="border-line relative space-y-8 border-l pl-6 sm:pl-10">
@@ -61,7 +63,7 @@ const { experience } = Astro.props;
 						</ul>
 
 						{job.technologies.length > 0 && (
-							<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías usadas">
+							<ul class="mt-6 flex flex-wrap gap-2" aria-label={t.common.technologiesUsed}>
 								{job.technologies.map((technology) => (
 									<li>
 										<TechBadge name={technology.name} icon={technology.icon} />

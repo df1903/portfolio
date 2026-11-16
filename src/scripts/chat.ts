@@ -6,9 +6,9 @@ import type { ChatAnswer, ChatMessage, Knowledge, KnowledgeLink } from '@/lib/ch
  * Estrategia: se intenta el modelo de lenguaje (`POST /api/chat`, Worker de Cloudflare). Si no existe
  * (hosting estático, preview local) o falla, responde el motor local con la misma base de conocimiento.
  * El motor local siempre aporta los enlaces y la sección relacionada, que son datos verificados.
+ * Idioma y textos llegan como `data-*` del panel (ver ChatWidget.astro).
  */
 
-const KNOWLEDGE_URL = '/knowledge.json';
 const CHAT_API_URL = '/api/chat';
 const REMOTE_TIMEOUT_MS = 15_000;
 const HISTORY_LIMIT = 8;
@@ -19,6 +19,7 @@ const log = panel?.querySelector<HTMLElement>('[data-chat-messages]');
 const form = panel?.querySelector<HTMLFormElement>('[data-chat-form]');
 const input = form?.querySelector<HTMLInputElement>('input[name="question"]');
 const suggestions = panel?.querySelector<HTMLElement>('[data-chat-suggestions]');
+const strings = panel?.dataset ?? {};
 
 let knowledgePromise: Promise<Knowledge> | undefined;
 let remoteAvailable = true;
@@ -26,7 +27,7 @@ let busy = false;
 const history: ChatMessage[] = [];
 
 function loadKnowledge(): Promise<Knowledge> {
-	knowledgePromise ??= fetch(KNOWLEDGE_URL).then((response) => {
+	knowledgePromise ??= fetch(strings.knowledgeUrl ?? '/knowledge.json').then((response) => {
 		if (!response.ok) throw new Error(`knowledge: HTTP ${response.status}`);
 		return response.json() as Promise<Knowledge>;
 	});
@@ -84,7 +85,7 @@ function showTyping(): HTMLElement | undefined {
 	const indicator = document.createElement('div');
 	indicator.className =
 		'bg-surface-raised mr-auto flex w-fit gap-1 rounded-2xl rounded-bl-md px-4 py-3.5';
-	indicator.setAttribute('aria-label', 'Escribiendo…');
+	indicator.setAttribute('aria-label', strings.typing ?? '');
 	for (let dot = 0; dot < 3; dot += 1) {
 		const element = document.createElement('span');
 		element.className = 'typing-dot bg-subtle size-1.5 rounded-full';
@@ -102,7 +103,7 @@ async function askRemote(): Promise<string | undefined> {
 		const response = await fetch(CHAT_API_URL, {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
-			body: JSON.stringify({ messages: history.slice(-HISTORY_LIMIT) }),
+			body: JSON.stringify({ locale: strings.locale, messages: history.slice(-HISTORY_LIMIT) }),
 			signal: AbortSignal.timeout(REMOTE_TIMEOUT_MS),
 		});
 		// 404/405: no hay Worker detrás (sitio estático). No se reintenta en esta visita.
@@ -116,7 +117,7 @@ async function askRemote(): Promise<string | undefined> {
 }
 
 function sectionLink(answer: ChatAnswer): KnowledgeLink[] {
-	return answer.section ? [{ label: 'Ver sección ↓', url: `#${answer.section}` }] : [];
+	return answer.section ? [{ label: strings.viewSection ?? '↓', url: `#${answer.section}` }] : [];
 }
 
 async function ask(question: string): Promise<void> {
@@ -136,11 +137,9 @@ async function ask(question: string): Promise<void> {
 		history.push({ role: 'assistant', content: text });
 	} catch {
 		typing?.remove();
-		addMessage(
-			'assistant',
-			'No pude cargar la información en este momento. Intenta de nuevo o usa la sección de contacto.',
-			[{ label: 'Ir a contacto ↓', url: '#contacto' }],
-		);
+		addMessage('assistant', strings.error ?? '', [
+			{ label: strings.goToContact ?? '↓', url: '#contacto' },
+		]);
 	} finally {
 		busy = false;
 	}
@@ -155,10 +154,7 @@ function setOpen(open: boolean): void {
 		return;
 	}
 	if (log && log.childElementCount === 0) {
-		addMessage(
-			'assistant',
-			`¡Hola! Soy el asistente de ${panel.dataset.owner}. Pregúntame por su experiencia, proyectos, tecnologías o cómo contactarlo.`,
-		);
+		addMessage('assistant', strings.welcome ?? '');
 		void loadKnowledge().catch(() => undefined);
 	}
 	input?.focus();

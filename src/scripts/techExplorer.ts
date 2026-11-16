@@ -30,7 +30,10 @@ function initTechExplorer(explorer: HTMLElement): void {
 
 		const projects: string[] = JSON.parse(selected.dataset.techProjects ?? '[]');
 		const experience: string[] = JSON.parse(selected.dataset.techExperience ?? '[]');
-		title.textContent = `Dónde he usado ${selected.dataset.techName}`;
+		title.textContent = (explorer.dataset.titleTemplate ?? '{name}').replace(
+			'{name}',
+			selected.dataset.techName ?? '',
+		);
 		fillGroup(panel, 'projects', projects);
 		fillGroup(panel, 'experience', experience);
 		empty.hidden = projects.length + experience.length > 0;
