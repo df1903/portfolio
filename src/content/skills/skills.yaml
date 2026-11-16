@@ -1,0 +1,69 @@
+# Habilidades (R3: distinto de tecnologías). `kind: soft` = blandas, `kind: fundamental` = conocimiento base.
+
+- id: problem-solving
+  name: Resolución de problemas
+  kind: soft
+  icon: mdi:puzzle-outline
+  description: Disfruto diagnosticar bugs y encontrar la solución más eficiente, no solo la que funciona.
+  order: 1
+- id: teamwork
+  name: Trabajo en equipo
+  kind: soft
+  icon: mdi:account-group-outline
+  description: Cómodo trabajando bajo Scrum/Kanban y coordinando cambios con Git en equipo.
+  order: 2
+- id: technical-communication
+  name: Comunicación técnica
+  kind: soft
+  icon: mdi:message-text-outline
+  description: Explico decisiones técnicas con claridad, tanto a otros desarrolladores como a personas sin perfil técnico.
+  order: 3
+- id: self-learning
+  name: Aprendizaje autónomo
+  kind: soft
+  icon: mdi:rocket-launch-outline
+  description: Aprendo rápido herramientas y tecnologías nuevas por cuenta propia, sin esperar a que me las enseñen.
+  order: 4
+- id: logical-thinking
+  name: Pensamiento lógico
+  kind: soft
+  icon: mdi:brain
+  description: Me apoyo en una base sólida de lógica y matemáticas para diseñar algoritmos y estructurar el código.
+  order: 5
+
+- id: algorithms
+  name: Lógica y pensamiento algorítmico
+  kind: fundamental
+  icon: mdi:function-variant
+  description: Análisis de complejidad, estructuras de datos y diseño de algoritmos.
+  topics: [Big O, Recursión, Búsqueda (BFS, DFS, A*), Minimax, Estructuras de datos]
+  order: 1
+- id: software-architecture
+  name: Arquitectura de software
+  kind: fundamental
+  icon: mdi:sitemap-outline
+  description: Diseño de sistemas mantenibles y elección del estilo adecuado para cada problema.
+  topics:
+    [MVC, Clean Architecture, Arquitectura Hexagonal, Microservicios, Monolitos, Patrones de diseño]
+  order: 2
+- id: agile
+  name: Metodologías ágiles
+  kind: fundamental
+  icon: mdi:sync
+  description: Entrega iterativa, calidad continua y colaboración.
+  topics: [Scrum, Kanban, Extreme Programming, DevOps, TDD, BDD]
+  order: 3
+- id: networking
+  name: Redes y protocolos
+  kind: fundamental
+  icon: mdi:lan
+  description: Cómo se comunican los sistemas, de la capa de transporte a la de aplicación.
+  topics: [TCP/IP, UDP, HTTP/HTTPS, REST, DNS, SSH, FTP/SFTP]
+  order: 4
+- id: math
+  name: Matemáticas para programación
+  kind: fundamental
+  icon: mdi:vector-triangle
+  description: Base matemática aplicada a algoritmos, optimización y aprendizaje automático.
+  topics: [Lógica, Notación matemática, Álgebra lineal, Probabilidad]
+  order: 5
