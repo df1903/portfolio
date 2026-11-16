@@ -12,9 +12,6 @@ interface Props {
 
 const MAX_VISIBLE_TECHNOLOGIES = 6;
 
-/** Dentro de `<template>` los iconos van incrustados (ver TechBadge `inline`). */
-const inlineIcon = { 'is:inline': true };
-
 const { project } = Astro.props;
 const visibleTechnologies = project.technologies.slice(0, MAX_VISIBLE_TECHNOLOGIES);
 const hiddenCount = project.technologies.length - visibleTechnologies.length;
@@ -114,8 +111,12 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 		</div>
 	</div>
 
-	<!-- Contenido del diálogo de detalle; scripts/projectDialog.ts lo clona al abrir. -->
-	<template data-project-detail={project.id}>
+	<!--
+		Contenido del diálogo de detalle; scripts/projectDialog.ts lo clona al abrir.
+		Es un <div hidden> y no un <template>: los iconos son un sprite, y un símbolo definido
+		dentro de contenido inerte dejaría en blanco sus usos en el resto de la página.
+	-->
+	<div data-project-detail={project.id} hidden>
 		<p class="eyebrow">{project.categoryLabel}</p>
 		<h3 class="mt-2 text-2xl font-bold sm:text-3xl" data-dialog-title>{project.title}</h3>
 		{project.context && <p class="text-subtle mt-2 text-sm">{project.context}</p>}
@@ -129,7 +130,6 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 								name="mdi:check-circle-outline"
 								class="text-accent mt-0.5 size-4 shrink-0"
 								aria-hidden="true"
-								{...inlineIcon}
 							/>
 							{highlight}
 						</li>
@@ -141,7 +141,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 			{
 				project.technologies.map((technology) => (
 					<li>
-						<TechBadge name={technology.name} icon={technology.icon} inline />
+						<TechBadge name={technology.name} icon={technology.icon} />
 					</li>
 				))
 			}
@@ -150,7 +150,7 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 			{
 				project.demo && (
 					<ExternalLink href={project.demo} class="btn btn-primary">
-						<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" {...inlineIcon} />
+						<Icon name="mdi:open-in-new" class="size-4" aria-hidden="true" />
 						Ver demo
 					</ExternalLink>
 				)
@@ -158,11 +158,11 @@ const hiddenCount = project.technologies.length - visibleTechnologies.length;
 			{
 				project.repos.map((repo) => (
 					<ExternalLink href={repo.url} class="btn btn-ghost">
-						<Icon name="simple-icons:github" class="size-4" aria-hidden="true" {...inlineIcon} />
+						<Icon name="simple-icons:github" class="size-4" aria-hidden="true" />
 						{repo.label}
 					</ExternalLink>
 				))
 			}
 		</div>
-	</template>
+	</div>
 </article>
